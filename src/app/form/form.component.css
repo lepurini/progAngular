@@ -1,0 +1,19 @@
+.noBordo{
+    border-bottom: 0px;
+}
+
+.bordo{
+    border: black solid 2px;
+}
+
+.bordoPiccolo{
+    border: black solid 1px;
+}
+
+.scritteRosse{
+    color: crimson;
+}
+
+.sfondoRosso{
+    background-color: #FAA0A0;
+}

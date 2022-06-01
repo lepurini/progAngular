@@ -1,0 +1,128 @@
+<div class="container text-center">
+    <div class="row b" style="margin-bottom: 40px;">
+        <div class="col order-last">
+            <table class="table">
+                <tbody style="float: right;">
+                    <tr>
+                        <th style="border-bottom: 0px; float: right;">
+                            <p class="scritteRosse">VALUTATO</p>
+                        </th>
+                        <th style="border-bottom: 0px;"><input type="text" [(ngModel)]="nomeValutato"></th>
+                    </tr>
+                    <tr>
+                        <th style="border-bottom: 0px; float: right;">
+                            <p class="scritteRosse">VALUTATORE</p>
+                        </th>
+                        <th style="border-bottom: 0px;"><input type="text" [(ngModel)]="nomeValutatore"></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col order-first ">
+            <table class="table bordo">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="2" class="scritteRosse">SCALA DI VALUTAZIONE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="col" class="bordoPiccolo">Giudizio</th>
+                        <th scope="col" class="bordoPiccolo">Punteggio</th>
+                    </tr>
+                    <tr>
+                        <td class="bordoPiccolo">Non adeguato al ruolo</td>
+                        <td class="bordoPiccolo">1</td>
+                    </tr>
+                    <tr>
+                        <td class="bordoPiccolo">Non completamente adeguato al ruolo</td>
+                        <td class="bordoPiccolo">2</td>
+                    </tr>
+                    <tr>
+                        <td class="bordoPiccolo">Adeguato</td>
+                        <td class="bordoPiccolo">3</td>
+                    </tr>
+                    <tr>
+                        <td class="bordoPiccolo">Più che adeguato al ruolo</td>
+                        <td class="bordoPiccolo">4</td>
+                    </tr>
+                    <tr>
+                        <td class="bordoPiccolo">Eccellente: supera le aspettative del ruolo</td>
+                        <td class="bordoPiccolo">5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!--<div class="container text-center">-->
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col" class="noBordo"></th>
+                <th scope="col" class="noBordo"></th>
+                <th scope="col" class="bordo scritteRosse">Data</th>
+                <th scope="col" class="bordo scritteRosse">Valutato</th>
+                <th scope="col" *ngIf="valutatore" class="bordo scritteRosse">Data</th>
+                <th scope="col" *ngIf="valutatore" class="bordo scritteRosse">Valutatore</th>
+            </tr>
+            <tr>
+                <th scope="col" class="noBordo"></th>
+                <th scope="col" class="noBordo"></th>
+                <th scope="col" class="bordo sfondoRosso"><input type="date"></th>
+                <th scope="col" class="bordo sfondoRosso"><input type="text" [(ngModel)]="nomeValutato" /></th>
+                <th scope="col" *ngIf="valutatore" class="bordo sfondoRosso"><input type="date"></th>
+                <th scope="col" *ngIf="valutatore" class="bordo sfondoRosso"><input type="text"
+                        [(ngModel)]="nomeValutatore" /></th>
+            </tr>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col" class="bordo">Punteggio</th>
+                <th scope="col" class="bordo">Commenti</th>
+                <th scope="col" *ngIf="valutatore" class="bordo">Punteggio</th>
+                <th scope="col" *ngIf="valutatore" class="bordo">Commenti</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="ok">
+            <tr *ngFor="let elemento of vettDati.domande; let ind = index">
+                <th scope="row" class="bordo">{{ind + 1}}</th>
+                <td style="white-space:normal; word-break: break-all;" class="bordo scritteRosse">
+                    {{elemento[0]}}<br>{{elemento[1]}}
+                </td>
+                <td class="bordo sfondoRosso"><select name="" id="" [(ngModel)]="vettoreV1[ind].punteggio">
+                        <option *ngFor="let num of punti">{{num}}</option>
+                    </select></td>
+                <td class="bordo"><textarea name="comments" style="resize: none;" class="container"
+                        placeholder="Scrivi qui" [(ngModel)]="vettoreV1[ind].Commento"></textarea></td>
+                <td *ngIf="valutatore" class="bordo sfondoRosso"><select name="" id=""
+                        [(ngModel)]="vettoreV2[ind].punteggio">
+                        <option *ngFor="let num of punti">{{num}}</option>
+                    </select></td>
+                <td *ngIf="valutatore" class="bordo"><textarea name="comments" style="resize: none;" class="container"
+                        placeholder="Scrivi qui" [(ngModel)]="vettoreV2[ind].Commento"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <th scope="col" class="noBordo"></th>
+                <th scope="col" class="noBordo"></th>
+                <th scope="col" class="noBordo">
+                    <p class="bordo">0</p>
+                </th>
+                <th scope="col" class="noBordo"></th>
+                <th scope="col" class="noBordo" *ngIf="valutatore">
+                    <p class="bordo">0</p>
+                </th>
+                <th scope="col" *ngIf="valutatore" class="noBordo"></th>
+            </tr>
+            <tr *ngFor="let elemento of vettDati.domFinali;" >
+                <th scope="col" colspan="2" class="bordo">{{elemento}}</th>
+                <th scope="col" colspan="4" class="sfondoRosso bordoPiccolo"><textarea name="comments"
+                        style="resize: none;" class="container" placeholder="Scrivi qui"></textarea></th>
+            </tr>
+        </tbody>
+    </table>
+    <button (click)="mostra()">prova</button>
+</div>
