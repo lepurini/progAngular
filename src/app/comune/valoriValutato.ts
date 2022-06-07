@@ -1,17 +1,13 @@
 export class ValoriValutato {
-    punteggio: number | undefined;
-    Commento: string | undefined;
 
-    /*
-    punteggio: number[] | undefined;
-    Commento: string[] | undefined;
+    punteggio: number[] = [];
+    Commento: string[] = [];
+    domFinali: string[] = [];
+
     nome: string | undefined;
-    domFinali: string[] | undefined
-
-    
-    */
+    valutatore: string | undefined;
+    data: Date | undefined;
 
     constructor() {
-
     }
 }

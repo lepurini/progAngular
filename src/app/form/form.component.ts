@@ -9,60 +9,95 @@ import { ValoriValutato } from '../comune/valoriValutato';
 })
 export class FormComponent implements OnInit {
 
+  //variabile che conterrà i dati ricevuti dal server 
   vettDati: any;
 
-  //titoli: string[] = [];
-  //domFinali: string[] = [];
+  //vettore che contiene i numeri da 1 a 5
   punti: number[] = [];
   valutatore: boolean | undefined;
-  //vettore con dati messi dal valutato
-  vettoreV1: ValoriValutato[] = [];
-  //vettore con dati messi dal valutatore
-  vettoreV2: ValoriValutato[] = [];
-  nomeValutato: string | undefined;
-  nomeValutatore: string | undefined;
+
+  //oggetto che contiene il nome, la data e le risposte al questionario
+  vettoreV1: ValoriValutato | undefined;
+
+
+  //variabile che mostra parti della pagina solo quando sono arrivati i dati
   ok: boolean | undefined;
+
+  //vettore contenente le domande della prima parte
+  vDom1: any[] = [];
+  //vettore contenente le domande della seconda parte
+  vDom2: any[] = [];
 
   constructor(private miohttp: HttpClient) { }
 
   ngOnInit(): void {
     this.ok = false;
-    //setTimeout(() => {
+
+    //richiesta al server
     this.miohttp.get("http://localhost:8000").subscribe((dati) => {
       console.log(dati);
       this.vettDati = dati;
-      for (let index = 0; index < this.vettDati.domande.length; index++) {
-        this.vettoreV1.push(new ValoriValutato());
-        this.vettoreV2.push(new ValoriValutato());
+      //controllo per dividere le domande con descrizione da quelle che vanno in fondo
+      for (let i = 0; i < this.vettDati.domande.length; i++) {
+        if (this.vettDati.domande[i].descrizione != undefined) {
+          this.vDom1.push(this.vettDati.domande[i]);
+        }
+        else {
+          this.vDom2.push(this.vettDati.domande[i]);
+        }
       }
+      //dati arrivati --> possibile mostrare parti della pagina
       this.ok = true;
     });
-    //}, 1);
+
+    this.vettoreV1 = new ValoriValutato();
 
     this.valutatore = false;
-    //this.titoli = ["PROBLEM SOLVING", "ORIENTAMENTO AL RISULTATO", "DECISIONE", "COOPERAZIONE", "FLESSIBILITA'", "INNOVAZIONE", "RESISTENZA ALLO STRESS", "IMPATTO"];
-    //this.domFinali = ["Giudizio complessivo", "Punti forza", "Idee migliorie", "COMMENTI CONCLUSIVI (VALUTATO)", "COMMENTI CONCLUSIVI (VALUTATORE)", "COMMENTI CONCLUSIVI COLLOQUIO"];
-    //this.punti = [];
+
     for (let index = 1; index < 6; index++) {
       this.punti.push(index);
     }
-    /*for (let index = 0; index < this.vettDati.length; index++) {
-      this.vettoreV1.push(new ValoriValutato());
-      this.vettoreV2.push(new ValoriValutato());
-    }*/
-    //console.log(this.titoli);
-    //console.log(this.punti);
-    //this.miohttp.post();
   }
 
-  mostra() {
-    for (let index = 0; index < this.vettDati.domande.length; index++) {
-      console.log(this.vettoreV1[index].punteggio);
-      console.log(this.vettoreV1[index].Commento);
-      console.log(this.vettoreV2[index].punteggio);
-      console.log(this.vettoreV2[index].Commento);
+  noVuoto(): boolean {
+    //se nome o data non definiti non mando i dati
+    if (this.vettoreV1?.data == undefined || this.vettoreV1.nome == undefined) {
+      return false;
     }
-    console.log(this.nomeValutato);
-    console.log(this.nomeValutatore);
+
+    //se risposte indefinite o "" non mando i dati
+    for (let i = 0; i < this.vettDati.domande.length; i++) {
+      if ((this.vettoreV1!.punteggio[i] == undefined) || (this.vettoreV1!.Commento[i] == undefined /*|| this.vettoreV1!.Commento[i] == ""*/)) {
+        return false;
+      }
+      this.vettoreV1!.Commento[i] = this.vettoreV1!.Commento[i].trim();
+      if (this.vettoreV1!.Commento[i] == "") {
+        return false;
+      }
+    }
+
+    //se risposte indefinite o "" non mando i dati
+    for (let i = 0; i < this.vettDati.domFinali.length; i++) {
+      if (this.vettDati.domFinali[i] == undefined /*|| this.vettDati.domFinali[i] == ""*/) {
+        return false;
+      }
+      this.vettoreV1!.domFinali[i] = this.vettoreV1!.domFinali[i].trim();
+      if (this.vettDati.domFinali[i] == "") {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  invia() {
+    //if (this.noVuoto()) {
+    console.log(this.vettoreV1?.data);
+    return this.miohttp.post("http://localhost:8000", JSON.stringify(this.vettoreV1), { responseType: 'text' }).subscribe((data) => {
+      console.log(data);
+    });
+    //} else {
+    //alert("Come ti permetti");
+    //return false;
+    //}
   }
 }

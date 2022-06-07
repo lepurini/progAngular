@@ -2,18 +2,28 @@
     <div class="row b" style="margin-bottom: 40px;">
         <div class="col order-last">
             <table class="table">
-                <tbody style="float: right;">
+                <tbody style="float: right;" *ngIf="ok">
                     <tr>
                         <th style="border-bottom: 0px; float: right;">
                             <p class="scritteRosse">VALUTATO</p>
                         </th>
-                        <th style="border-bottom: 0px;"><input type="text" [(ngModel)]="nomeValutato"></th>
+                        <th style="border-bottom: 0px;">
+                            <!--<input type="text" [(ngModel)]="nomeValutato">-->
+                            <select name="" id="" [(ngModel)]="this.vettoreV1!.nome" *ngIf="ok">
+                                <option *ngFor="let elemento of vettDati.dipendenti">{{elemento.cognomenome}}</option>
+                            </select>
+                        </th>
                     </tr>
-                    <tr>
+                    <tr *ngIf="vettDati.valutatore">
                         <th style="border-bottom: 0px; float: right;">
                             <p class="scritteRosse">VALUTATORE</p>
                         </th>
-                        <th style="border-bottom: 0px;"><input type="text" [(ngModel)]="nomeValutatore"></th>
+                        <th style="border-bottom: 0px;">
+                            <!--<input type="text" [(ngModel)]="nomeValutatore">-->
+                            <select name="" id="" [(ngModel)]="this.vettoreV1!.valutatore" *ngIf="ok">
+                                <option *ngFor="let elemento of vettDati.responsabile">{{elemento}}</option>
+                            </select>
+                        </th>
                     </tr>
                 </tbody>
             </table>
@@ -55,7 +65,6 @@
         </div>
     </div>
 
-
     <!--<div class="container text-center">-->
 
     <table class="table">
@@ -65,45 +74,57 @@
                 <th scope="col" class="noBordo"></th>
                 <th scope="col" class="bordo scritteRosse">Data</th>
                 <th scope="col" class="bordo scritteRosse">Valutato</th>
-                <th scope="col" *ngIf="valutatore" class="bordo scritteRosse">Data</th>
-                <th scope="col" *ngIf="valutatore" class="bordo scritteRosse">Valutatore</th>
+                <!--<th scope="col" *ngIf="valutatore" class="bordo scritteRosse">Data</th>
+                <th scope="col" *ngIf="valutatore" class="bordo scritteRosse">Valutatore</th>-->
             </tr>
             <tr>
                 <th scope="col" class="noBordo"></th>
                 <th scope="col" class="noBordo"></th>
-                <th scope="col" class="bordo sfondoRosso"><input type="date"></th>
-                <th scope="col" class="bordo sfondoRosso"><input type="text" [(ngModel)]="nomeValutato" /></th>
-                <th scope="col" *ngIf="valutatore" class="bordo sfondoRosso"><input type="date"></th>
+                <th scope="col" class="bordo sfondoRosso"><input type="date" [(ngModel)]="vettoreV1!.data"
+                        style="width:1.5em; font-size: 1em"></th>
+                <th scope="col" class="bordo sfondoRosso">
+                    <!--<input type="text" [(ngModel)]="nomeValutato" />-->
+                    <select name="" id="" [(ngModel)]="this.vettoreV1!.nome" *ngIf="ok">
+                        <option *ngFor="let elemento of vettDati.dipendenti">{{elemento.cognomenome}}</option>
+                    </select>
+                </th>
+                <!--<th scope="col" *ngIf="valutatore" class="bordo sfondoRosso"><input type="date"></th>
                 <th scope="col" *ngIf="valutatore" class="bordo sfondoRosso"><input type="text"
-                        [(ngModel)]="nomeValutatore" /></th>
+                        [(ngModel)]="nomeValutatore" /></th>-->
             </tr>
             <tr>
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col" class="bordo">Punteggio</th>
                 <th scope="col" class="bordo">Commenti</th>
-                <th scope="col" *ngIf="valutatore" class="bordo">Punteggio</th>
-                <th scope="col" *ngIf="valutatore" class="bordo">Commenti</th>
+                <!--<th scope="col" *ngIf="valutatore" class="bordo">Punteggio</th>
+                <th scope="col" *ngIf="valutatore" class="bordo">Commenti</th>-->
             </tr>
         </thead>
         <tbody *ngIf="ok">
-            <tr *ngFor="let elemento of vettDati.domande; let ind = index">
+            <!--Per ogni domanda crea una riga-->
+            <tr *ngFor="let elemento of vDom1; let ind = index">
                 <th scope="row" class="bordo">{{ind + 1}}</th>
-                <td style="white-space:normal; word-break: break-all;" class="bordo scritteRosse">
-                    {{elemento[0]}}<br>{{elemento[1]}}
+                <td class="bordo">
+                    <p class="scritteRosse">
+                        {{elemento.titolocampo}}</p>
+                    <p style="white-space:normal; word-break: break-all;">
+                        {{elemento.descrizione}}</p>
                 </td>
-                <td class="bordo sfondoRosso"><select name="" id="" [(ngModel)]="vettoreV1[ind].punteggio">
+                <td class="bordo sfondoRosso">
+                    <select name="" id="" [(ngModel)]="vettoreV1!.punteggio[ind]">
                         <option *ngFor="let num of punti">{{num}}</option>
-                    </select></td>
+                    </select>
+                </td>
                 <td class="bordo"><textarea name="comments" style="resize: none;" class="container"
-                        placeholder="Scrivi qui" [(ngModel)]="vettoreV1[ind].Commento"></textarea></td>
-                <td *ngIf="valutatore" class="bordo sfondoRosso"><select name="" id=""
+                        placeholder="Scrivi qui" [(ngModel)]="vettoreV1!.Commento[ind]"></textarea></td>
+                <!--<td *ngIf="valutatore" class="bordo sfondoRosso"><select name="" id=""
                         [(ngModel)]="vettoreV2[ind].punteggio">
                         <option *ngFor="let num of punti">{{num}}</option>
                     </select></td>
                 <td *ngIf="valutatore" class="bordo"><textarea name="comments" style="resize: none;" class="container"
                         placeholder="Scrivi qui" [(ngModel)]="vettoreV2[ind].Commento"></textarea>
-                </td>
+                </td-->
             </tr>
             <tr>
                 <th scope="col" class="noBordo"></th>
@@ -112,17 +133,24 @@
                     <p class="bordo">0</p>
                 </th>
                 <th scope="col" class="noBordo"></th>
-                <th scope="col" class="noBordo" *ngIf="valutatore">
+                <!--<th scope="col" class="noBordo" *ngIf="valutatore">
                     <p class="bordo">0</p>
                 </th>
-                <th scope="col" *ngIf="valutatore" class="noBordo"></th>
-            </tr>
-            <tr *ngFor="let elemento of vettDati.domFinali;" >
-                <th scope="col" colspan="2" class="bordo">{{elemento}}</th>
-                <th scope="col" colspan="4" class="sfondoRosso bordoPiccolo"><textarea name="comments"
-                        style="resize: none;" class="container" placeholder="Scrivi qui"></textarea></th>
+                <th scope="col" *ngIf="valutatore" class="noBordo"></th>-->
             </tr>
         </tbody>
     </table>
-    <button (click)="mostra()">prova</button>
+    <table *ngIf="ok">
+        <tbody>
+            <!--Per ogni domanda crea una riga-->
+            <tr *ngFor="let elemento of vDom2; let ind = index">
+                <th scope="col-3" class="bordo">{{elemento.titolocampo}}</th>
+                <th scope="col-9" class="sfondoRosso bordoPiccolo container">
+                    <textarea name="comments" style="resize: none;" class="container" placeholder="Scrivi qui"
+                        [(ngModel)]="vettoreV1!.domFinali[ind]"></textarea>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+    <button (click)="invia()">Invia</button>
 </div>
