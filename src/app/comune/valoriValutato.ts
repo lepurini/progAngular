@@ -1,12 +1,18 @@
+import { Domanda } from "./domanda";
+import { DomandaFine } from "./domandaFine";
+
 export class ValoriValutato {
 
-    punteggio: number[] = [];
-    Commento: string[] = [];
-    domFinali: string[] = [];
+    //punteggio: number[] = [];
+    //Commento: string[] = [];
+    domFinali: DomandaFine[] = [];
+    risposteDomande: Domanda[] = [];
 
-    nome: string | undefined;
+    
     valutatore: string | undefined;
     data: Date | undefined;
+    id_dipendente: number | undefined;
+    tipo = 1;
 
     constructor() {
     }

@@ -9,8 +9,8 @@
                         </th>
                         <th style="border-bottom: 0px;">
                             <!--<input type="text" [(ngModel)]="nomeValutato">-->
-                            <select name="" id="" [(ngModel)]="this.vettoreV1!.nome" *ngIf="ok">
-                                <option *ngFor="let elemento of vettDati.dipendenti">{{elemento.cognomenome}}</option>
+                            <select name="" id="" [(ngModel)]="this.nome" *ngIf="ok">
+                                <option *ngFor="let elemento of vettDati.dipendenti;">{{elemento.id}}) {{elemento.cognomenome}}</option>
                             </select>
                         </th>
                     </tr>
@@ -84,8 +84,9 @@
                         style="width:1.5em; font-size: 1em"></th>
                 <th scope="col" class="bordo sfondoRosso">
                     <!--<input type="text" [(ngModel)]="nomeValutato" />-->
-                    <select name="" id="" [(ngModel)]="this.vettoreV1!.nome" *ngIf="ok">
-                        <option *ngFor="let elemento of vettDati.dipendenti">{{elemento.cognomenome}}</option>
+                    <select name="" id="" [(ngModel)]="this.nome" *ngIf="ok">
+                        <option *ngFor="let elemento of vettDati.dipendenti; let ind = index">
+                            {{elemento.id}}) {{elemento.cognomenome}}</option>
                     </select>
                 </th>
                 <!--<th scope="col" *ngIf="valutatore" class="bordo sfondoRosso"><input type="date"></th>
@@ -104,20 +105,20 @@
         <tbody *ngIf="ok">
             <!--Per ogni domanda crea una riga-->
             <tr *ngFor="let elemento of vDom1; let ind = index">
-                <th scope="row" class="bordo">{{ind + 1}}</th>
+                <th scope="row" class="bordo">{{elemento.ordinamento}}</th>
                 <td class="bordo">
                     <p class="scritteRosse">
-                        {{elemento.titolocampo}}</p>
+                        {{elemento.titolodomanda}}</p>
                     <p style="white-space:normal; word-break: break-all;">
                         {{elemento.descrizione}}</p>
                 </td>
                 <td class="bordo sfondoRosso">
-                    <select name="" id="" [(ngModel)]="vettoreV1!.punteggio[ind]">
+                    <select name="" id="" [(ngModel)]="vettoreV1!.risposteDomande[ind].punteggio">
                         <option *ngFor="let num of punti">{{num}}</option>
                     </select>
                 </td>
                 <td class="bordo"><textarea name="comments" style="resize: none;" class="container"
-                        placeholder="Scrivi qui" [(ngModel)]="vettoreV1!.Commento[ind]"></textarea></td>
+                        placeholder="Scrivi qui" [(ngModel)]="vettoreV1!.risposteDomande[ind].nota"></textarea></td>
                 <!--<td *ngIf="valutatore" class="bordo sfondoRosso"><select name="" id=""
                         [(ngModel)]="vettoreV2[ind].punteggio">
                         <option *ngFor="let num of punti">{{num}}</option>
@@ -144,10 +145,10 @@
         <tbody>
             <!--Per ogni domanda crea una riga-->
             <tr *ngFor="let elemento of vDom2; let ind = index">
-                <th scope="col-3" class="bordo">{{elemento.titolocampo}}</th>
+                <th scope="col-3" class="bordo">{{elemento.titolodomanda}}</th>
                 <th scope="col-9" class="sfondoRosso bordoPiccolo container">
                     <textarea name="comments" style="resize: none;" class="container" placeholder="Scrivi qui"
-                        [(ngModel)]="vettoreV1!.domFinali[ind]"></textarea>
+                        [(ngModel)]="vettoreV1!.domFinali[ind].nota"></textarea>
                 </th>
             </tr>
         </tbody>

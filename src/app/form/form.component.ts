@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ValoriValutato } from '../comune/valoriValutato';
+import { Domanda } from '../comune/domanda';
+import { DomandaFine } from '../comune/domandaFine';
 
 @Component({
   selector: 'app-form',
@@ -16,6 +18,8 @@ export class FormComponent implements OnInit {
   punti: number[] = [];
   valutatore: boolean | undefined;
 
+  nome: string | undefined;
+
   //oggetto che contiene il nome, la data e le risposte al questionario
   vettoreV1: ValoriValutato | undefined;
 
@@ -28,10 +32,16 @@ export class FormComponent implements OnInit {
   //vettore contenente le domande della seconda parte
   vDom2: any[] = [];
 
+  /*oggetto: {
+    nombre: string;
+    id: number;
+  } | undefined*/
+
   constructor(private miohttp: HttpClient) { }
 
   ngOnInit(): void {
     this.ok = false;
+    this.vettoreV1 = new ValoriValutato();
 
     //richiesta al server
     this.miohttp.get("http://localhost:8000").subscribe((dati) => {
@@ -39,10 +49,13 @@ export class FormComponent implements OnInit {
       this.vettDati = dati;
       //controllo per dividere le domande con descrizione da quelle che vanno in fondo
       for (let i = 0; i < this.vettDati.domande.length; i++) {
-        if (this.vettDati.domande[i].descrizione != undefined) {
+        //this.vettoreV1?.risposteDomande.push(new Domanda());
+        if (this.vettDati.domande[i].tipo == 1) {
+          this.vettoreV1?.risposteDomande.push(new Domanda(this.vettDati.domande[i].id));
           this.vDom1.push(this.vettDati.domande[i]);
         }
         else {
+          this.vettoreV1?.domFinali.push(new DomandaFine(this.vettDati.domande[i].id));
           this.vDom2.push(this.vettDati.domande[i]);
         }
       }
@@ -50,7 +63,7 @@ export class FormComponent implements OnInit {
       this.ok = true;
     });
 
-    this.vettoreV1 = new ValoriValutato();
+
 
     this.valutatore = false;
 
@@ -59,45 +72,59 @@ export class FormComponent implements OnInit {
     }
   }
 
-  noVuoto(): boolean {
+  /*noVuoto() {
     //se nome o data non definiti non mando i dati
     if (this.vettoreV1?.data == undefined || this.vettoreV1.nome == undefined) {
-      return false;
+      console.log("a");
+      throw new Error("Campo data o nome non compilati");
     }
 
     //se risposte indefinite o "" non mando i dati
     for (let i = 0; i < this.vettDati.domande.length; i++) {
-      if ((this.vettoreV1!.punteggio[i] == undefined) || (this.vettoreV1!.Commento[i] == undefined /*|| this.vettoreV1!.Commento[i] == ""*/)) {
-        return false;
+      try {
+        this.vettoreV1!.Commento[i] = this.vettoreV1!.Commento[i].toString().trim();
+      } catch (error) {
+        console.log(error);
+        throw new Error("Completare i campi di tutte le domande");
       }
-      this.vettoreV1!.Commento[i] = this.vettoreV1!.Commento[i].trim();
-      if (this.vettoreV1!.Commento[i] == "") {
-        return false;
+      if (this.vettoreV1!.punteggio[i] == undefined || this.vettoreV1!.Commento[i] == "") {
+        console.log("c")
+        throw new Error("Completare i campi di tutte le domande");
       }
     }
 
     //se risposte indefinite o "" non mando i dati
     for (let i = 0; i < this.vettDati.domFinali.length; i++) {
-      if (this.vettDati.domFinali[i] == undefined /*|| this.vettDati.domFinali[i] == ""*/) {
-        return false;
+      try {
+        this.vettoreV1!.domFinali[i] = this.vettoreV1!.domFinali[i].trim();
+      } catch (error) {
+        console.log("d");
+        throw new Error("Completare i campi di tutte le domande");
       }
-      this.vettoreV1!.domFinali[i] = this.vettoreV1!.domFinali[i].trim();
       if (this.vettDati.domFinali[i] == "") {
-        return false;
+        console.log("e");
+        throw new Error("Completare i campi di tutte le domande");
       }
     }
-    return true;
-  }
+  }*/
 
   invia() {
-    //if (this.noVuoto()) {
-    console.log(this.vettoreV1?.data);
+    //try {
+    //this.noVuoto()
+    //console.log(this.oggetto?.id);
+    //console.log(this.vettoreV1?.data);
+    this.vettoreV1!.id_dipendente = Number(this.nome?.substring(0, this.nome.indexOf(")")));
     return this.miohttp.post("http://localhost:8000", JSON.stringify(this.vettoreV1), { responseType: 'text' }).subscribe((data) => {
       console.log(data);
     });
-    //} else {
-    //alert("Come ti permetti");
-    //return false;
-    //}
+    /*} catch (error) {
+      alert(error);
+      return 0;
+    }*/
   }
+
+  /*salvaId(idSelect: number){
+    console.log("ciao");
+    this.oggetto!.id = idSelect;
+  }*/
 }
