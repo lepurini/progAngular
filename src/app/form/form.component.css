@@ -1,19 +1,42 @@
-.noBordo{
+#btnInvia {
+    /*background-color: #FAA0A0;*/
+    margin-top: 30px;
+    margin-bottom: 30px;
+    /*border: 1.5px black solid;*/
+    transition: transform .2s;
+}
+
+#btnInvia:active {
+    transform: scale(0.9);
+    box-shadow: inset 4px 6px 4px 3px #777370 !important;
+}
+
+.noBordo {
     border-bottom: 0px;
 }
 
-.bordo{
+.bordo {
     border: black solid 2px;
 }
 
-.bordoPiccolo{
+.bordoPiccolo {
     border: black solid 1px;
 }
 
-.scritteRosse{
+.scritteRosse {
     color: crimson;
 }
 
-.sfondoRosso{
+.sfondoRosso {
     background-color: #FAA0A0;
+}
+
+.carta {
+    box-shadow: 10px 10px 5px #888888;
+    transition: transform .2s;
+}
+
+.carta:hover {
+    transform: scale(1.025);
+    /*background-color: white;*/
 }

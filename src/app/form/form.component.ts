@@ -10,7 +10,6 @@ import { DomandaFine } from '../comune/domandaFine';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-
   //variabile che conterrà i dati ricevuti dal server 
   vettDati: any;
 
@@ -27,19 +26,17 @@ export class FormComponent implements OnInit {
   //variabile che mostra parti della pagina solo quando sono arrivati i dati
   ok: boolean | undefined;
 
+  finito!: boolean ;
+
   //vettore contenente le domande della prima parte
   vDom1: any[] = [];
   //vettore contenente le domande della seconda parte
   vDom2: any[] = [];
 
-  /*oggetto: {
-    nombre: string;
-    id: number;
-  } | undefined*/
-
   constructor(private miohttp: HttpClient) { }
 
   ngOnInit(): void {
+    this.setFinito(false);
     this.ok = false;
     this.vettoreV1 = new ValoriValutato();
 
@@ -72,59 +69,96 @@ export class FormComponent implements OnInit {
     }
   }
 
-  /*noVuoto() {
+  noVuoto() {
     //se nome o data non definiti non mando i dati
-    if (this.vettoreV1?.data == undefined || this.vettoreV1.nome == undefined) {
+    if (this.vettoreV1?.data == undefined || this.nome == undefined) {
       console.log("a");
       throw new Error("Campo data o nome non compilati");
     }
 
     //se risposte indefinite o "" non mando i dati
-    for (let i = 0; i < this.vettDati.domande.length; i++) {
-      try {
-        this.vettoreV1!.Commento[i] = this.vettoreV1!.Commento[i].toString().trim();
-      } catch (error) {
-        console.log(error);
-        throw new Error("Completare i campi di tutte le domande");
+    for (let i = 0; i < this.vettoreV1.risposteDomande.length; i++) {
+      //console.log(this.vettoreV1!.risposteDomande[i]);
+      if (this.vettoreV1!.risposteDomande[i].punteggio == undefined || this.vettoreV1!.risposteDomande[i].nota == undefined) {
+        console.log("c");
+        throw new Error("Completare i campi di tutti i punteggi e commenti");
       }
-      if (this.vettoreV1!.punteggio[i] == undefined || this.vettoreV1!.Commento[i] == "") {
+
+      this.vettoreV1.risposteDomande[i].nota = this.vettoreV1.risposteDomande[i].nota!.trim();
+
+      if (this.vettoreV1!.risposteDomande[i].nota == "") {
+        console.log("b");
+        throw new Error("Caratteri inseriti nel campo commenti non validi");
+      }
+      /*//try {
+      if (this.vettoreV1.risposteDomande[i].nota != undefined) {
+        this.vettoreV1.risposteDomande[i].nota = this.vettoreV1.risposteDomande[i].nota?.trim();
+      } else {
+        //} catch (error) {
+        console.log("b")
+        //console.log(error);
+        throw new Error("Completare i campi di tutte le domande lasciati vuoti");
+      }
+      //}
+      if (this.vettoreV1!.risposteDomande[i].punteggio == undefined || this.vettoreV1!.risposteDomande[i].nota == "") {
         console.log("c")
-        throw new Error("Completare i campi di tutte le domande");
-      }
+        throw new Error("Completare i campi di tutti i punteggi e commenti");
+      }*/
     }
 
     //se risposte indefinite o "" non mando i dati
-    for (let i = 0; i < this.vettDati.domFinali.length; i++) {
-      try {
-        this.vettoreV1!.domFinali[i] = this.vettoreV1!.domFinali[i].trim();
-      } catch (error) {
-        console.log("d");
-        throw new Error("Completare i campi di tutte le domande");
+    for (let i = 0; i < this.vettoreV1.domFinali.length; i++) {
+      if (this.vettoreV1.domFinali[i].nota == undefined) {
+        console.log("z");
+        throw new Error("Completare tutti i campi dei commenti vuoti");
       }
+
+      this.vettoreV1.domFinali[i].nota = this.vettoreV1.domFinali[i].nota!.trim();
+
+      if (this.vettoreV1.domFinali[i].nota == "") {
+        console.log("e");
+        throw new Error("Caratteri inseriti nel campo commenti non validi");
+      }
+      /*//try {
+      if (this.vettoreV1.domFinali[i].nota != undefined) {
+        this.vettoreV1.domFinali[i].nota = this.vettoreV1.domFinali[i].nota?.trim();
+      } else {
+        //} catch (error) {
+        console.log("d");
+        throw new Error("Completare i campi di tutte le domande lasciati vuoti");
+      }
+      //}
       if (this.vettDati.domFinali[i] == "") {
         console.log("e");
         throw new Error("Completare i campi di tutte le domande");
-      }
+      }*/
     }
-  }*/
-
-  invia() {
-    //try {
-    //this.noVuoto()
-    //console.log(this.oggetto?.id);
-    //console.log(this.vettoreV1?.data);
-    this.vettoreV1!.id_dipendente = Number(this.nome?.substring(0, this.nome.indexOf(")")));
-    return this.miohttp.post("http://localhost:8000", JSON.stringify(this.vettoreV1), { responseType: 'text' }).subscribe((data) => {
-      console.log(data);
-    });
-    /*} catch (error) {
-      alert(error);
-      return 0;
-    }*/
   }
 
-  /*salvaId(idSelect: number){
-    console.log("ciao");
-    this.oggetto!.id = idSelect;
-  }*/
+  invia() {
+    try {
+      this.noVuoto()
+      //console.log(this.oggetto?.id);
+      console.log(this.vettoreV1?.data);
+      this.vettoreV1!.id_dipendente = Number(this.nome?.substring(0, this.nome.indexOf(")")));
+      return this.miohttp.post("http://localhost:8000", JSON.stringify(this.vettoreV1), { responseType: 'text' }).subscribe((data) => {
+        console.log(data);
+        this.setFinito(Boolean(data));
+        //this.finito = Boolean(data);
+        console.log(this.finito);
+        console.log("ciao");
+      });
+    } catch (error) {
+      console.log(error);
+      alert(error);
+      return 0;
+    }
+  }
+
+  getFinito(): boolean{
+    return this.finito;
+  }
+  setFinito(booleano: boolean){
+    this.finito = booleano;
+  }
 }

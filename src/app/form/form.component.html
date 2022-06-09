@@ -1,4 +1,4 @@
-<div class="container text-center">
+<div class="container text-center" *ngIf="!getFinito(); else finito">
     <div class="row b" style="margin-bottom: 40px;">
         <div class="col order-last">
             <table class="table">
@@ -10,7 +10,8 @@
                         <th style="border-bottom: 0px;">
                             <!--<input type="text" [(ngModel)]="nomeValutato">-->
                             <select name="" id="" [(ngModel)]="this.nome" *ngIf="ok">
-                                <option *ngFor="let elemento of vettDati.dipendenti;">{{elemento.id}}) {{elemento.cognomenome}}</option>
+                                <option *ngFor="let elemento of vettDati.dipendenti;">{{elemento.id}})
+                                    {{elemento.cognomenome}}</option>
                             </select>
                         </th>
                     </tr>
@@ -29,7 +30,7 @@
             </table>
         </div>
         <div class="col order-first ">
-            <table class="table bordo">
+            <table class="table bordo carta">
                 <thead>
                     <tr>
                         <th scope="col" colspan="2" class="scritteRosse">SCALA DI VALUTAZIONE</th>
@@ -67,7 +68,7 @@
 
     <!--<div class="container text-center">-->
 
-    <table class="table">
+    <table class="table carta" style=" margin-bottom: 60px;">
         <thead>
             <tr>
                 <th scope="col" class="noBordo"></th>
@@ -105,20 +106,23 @@
         <tbody *ngIf="ok">
             <!--Per ogni domanda crea una riga-->
             <tr *ngFor="let elemento of vDom1; let ind = index">
-                <th scope="row" class="bordo">{{elemento.ordinamento}}</th>
-                <td class="bordo">
+                <th scope="row" class="bordo" style="width: 2%;">{{elemento.ordinamento}}</th>
+                <td class="bordo" style="width: 43%;">
                     <p class="scritteRosse">
                         {{elemento.titolodomanda}}</p>
                     <p style="white-space:normal; word-break: break-all;">
                         {{elemento.descrizione}}</p>
                 </td>
-                <td class="bordo sfondoRosso">
+                <td class="bordo sfondoRosso" style="width: 2%;">
                     <select name="" id="" [(ngModel)]="vettoreV1!.risposteDomande[ind].punteggio">
                         <option *ngFor="let num of punti">{{num}}</option>
                     </select>
                 </td>
-                <td class="bordo"><textarea name="comments" style="resize: none;" class="container"
-                        placeholder="Scrivi qui" [(ngModel)]="vettoreV1!.risposteDomande[ind].nota"></textarea></td>
+                <td class="bordo" style="width: 43%;">
+                    <textarea name="comments" style="resize: none; height:100%; " class="container "
+                        placeholder="Scrivi qui" [(ngModel)]="vettoreV1!.risposteDomande[ind].nota">
+                    </textarea>
+                </td>
                 <!--<td *ngIf="valutatore" class="bordo sfondoRosso"><select name="" id=""
                         [(ngModel)]="vettoreV2[ind].punteggio">
                         <option *ngFor="let num of punti">{{num}}</option>
@@ -127,21 +131,21 @@
                         placeholder="Scrivi qui" [(ngModel)]="vettoreV2[ind].Commento"></textarea>
                 </td-->
             </tr>
-            <tr>
+            <!--<tr>
                 <th scope="col" class="noBordo"></th>
                 <th scope="col" class="noBordo"></th>
                 <th scope="col" class="noBordo">
                     <p class="bordo">0</p>
                 </th>
                 <th scope="col" class="noBordo"></th>
-                <!--<th scope="col" class="noBordo" *ngIf="valutatore">
+                <th scope="col" class="noBordo" *ngIf="valutatore">
                     <p class="bordo">0</p>
                 </th>
-                <th scope="col" *ngIf="valutatore" class="noBordo"></th>-->
-            </tr>
+                <th scope="col" *ngIf="valutatore" class="noBordo"></th>
+            </tr>-->
         </tbody>
     </table>
-    <table *ngIf="ok">
+    <table *ngIf="ok"  class="carta">
         <tbody>
             <!--Per ogni domanda crea una riga-->
             <tr *ngFor="let elemento of vDom2; let ind = index">
@@ -153,5 +157,10 @@
             </tr>
         </tbody>
     </table>
-    <button (click)="invia()">Invia</button>
+    <button type="button" class="btn btn sfondoRosso bordoPiccolo" id="btnInvia" (click)="invia()" style="box-shadow: 6px 6px 3px #888888;"><b>Invia</b></button>
+    <!--<button (click)="invia()">Invia</button>-->
 </div>
+
+<ng-template #finito>
+    <app-finito></app-finito>
+</ng-template>

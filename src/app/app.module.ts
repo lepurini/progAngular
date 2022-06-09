@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormComponent } from './form/form.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FinitoComponent } from './finito/finito.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FormComponent
+    FormComponent,
+    FinitoComponent
   ],
   imports: [
     BrowserModule,
