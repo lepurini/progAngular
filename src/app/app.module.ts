@@ -7,18 +7,33 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormComponent } from './form/form.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FinitoComponent } from './finito/finito.component';
+import { RouterModule } from '@angular/router';
+import { PagInizialeComponent } from './pag-iniziale/pag-iniziale.component';
+import { ValutatoreComponent } from './valutatore/valutatore.component';
+import { AdminComponent } from './admin/admin.component';
+
+const LISTA = [
+  { path: '', component: PagInizialeComponent },
+  { path: 'questionario', component: FormComponent },
+  { path: 'valutatore', component: ValutatoreComponent },
+  { path: 'admin', component: AdminComponent }
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     FormComponent,
-    FinitoComponent
+    FinitoComponent,
+    PagInizialeComponent,
+    ValutatoreComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
     NgbModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot(LISTA)
   ],
   providers: [],
   bootstrap: [AppComponent]

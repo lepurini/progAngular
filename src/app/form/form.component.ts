@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ValoriValutato } from '../comune/valoriValutato';
 import { Domanda } from '../comune/domanda';
 import { DomandaFine } from '../comune/domandaFine';
+import { CondivisoService } from '../condiviso.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-form',
@@ -22,26 +24,57 @@ export class FormComponent implements OnInit {
   //oggetto che contiene il nome, la data e le risposte al questionario
   vettoreV1: ValoriValutato | undefined;
 
+  url: string | undefined;
 
   //variabile che mostra parti della pagina solo quando sono arrivati i dati
   ok: boolean | undefined;
 
-  finito!: boolean ;
+  finito!: boolean;
 
   //vettore contenente le domande della prima parte
   vDom1: any[] = [];
   //vettore contenente le domande della seconda parte
   vDom2: any[] = [];
 
-  constructor(private miohttp: HttpClient) { }
+  constructor(private miohttp: HttpClient, private condiviso: CondivisoService, private router: Router) { }
 
   ngOnInit(): void {
     this.setFinito(false);
     this.ok = false;
     this.vettoreV1 = new ValoriValutato();
+    if ((this.vettoreV1!.id_questionario = this.condiviso.getIdQuestionario()) == undefined) {
+      this.router.navigateByUrl('/');
+    }
+    else {
+      //this.vettoreV1!.id_questionario = this.condiviso.getIdQuestionario();
+
+      this.url = "http://localhost:8000/questionario/" + String(this.vettoreV1.id_questionario /*= this.condiviso.getIdQuestionario()*/);
+      console.log(this.vettoreV1.id_questionario);
+
+
+      this.condiviso.prendiDati(this.url).subscribe((data: any) => {
+        this.vettDati = data;
+        this.dividiDomande(this.vettDati.domande);
+        /*for (let i = 0; i < this.vettDati.domande.length; i++) {
+          //this.vettoreV1?.risposteDomande.push(new Domanda());
+          if (this.vettDati.domande[i].tipo == 1) {
+            this.vettoreV1?.risposteDomande.push(new Domanda(this.vettDati.domande[i].id));
+            this.vDom1.push(this.vettDati.domande[i]);
+          }
+          else {
+            this.vettoreV1?.domFinali.push(new DomandaFine(this.vettDati.domande[i].id));
+            this.vDom2.push(this.vettDati.domande[i]);
+          }
+        }*/
+        //dati arrivati --> possibile mostrare parti della pagina
+        this.ok = true;
+
+      })
+    }
+
 
     //richiesta al server
-    this.miohttp.get("http://localhost:8000").subscribe((dati) => {
+    /*this.miohttp.get(/*"http://localhost:8000/questionario/" + String(this.vettoreV1.id_questionario) this.url).subscribe((dati) => {
       console.log(dati);
       this.vettDati = dati;
       //controllo per dividere le domande con descrizione da quelle che vanno in fondo
@@ -58,7 +91,7 @@ export class FormComponent implements OnInit {
       }
       //dati arrivati --> possibile mostrare parti della pagina
       this.ok = true;
-    });
+    });*/
 
 
 
@@ -138,9 +171,9 @@ export class FormComponent implements OnInit {
   invia() {
     try {
       this.noVuoto()
-      //console.log(this.oggetto?.id);
       console.log(this.vettoreV1?.data);
       this.vettoreV1!.id_dipendente = Number(this.nome?.substring(0, this.nome.indexOf(")")));
+      //this.vettoreV1!.id_questionario = this.condiviso.getIdQuestionario();
       return this.miohttp.post("http://localhost:8000", JSON.stringify(this.vettoreV1), { responseType: 'text' }).subscribe((data) => {
         console.log(data);
         this.setFinito(Boolean(data));
@@ -149,16 +182,31 @@ export class FormComponent implements OnInit {
         console.log("ciao");
       });
     } catch (error) {
-      console.log(error);
+      //console.log(error);
       alert(error);
-      return 0;
+      return;
     }
   }
 
-  getFinito(): boolean{
+  getFinito(): boolean {
     return this.finito;
   }
-  setFinito(booleano: boolean){
+
+  setFinito(booleano: boolean) {
     this.finito = booleano;
+  }
+
+  dividiDomande(domande: any[]) {
+    for (let i = 0; i < domande.length; i++) {
+      //this.vettoreV1?.risposteDomande.push(new Domanda());
+      if (domande[i].tipo == 1) {
+        this.vettoreV1?.risposteDomande.push(new Domanda(domande[i].id));
+        this.vDom1.push(domande[i]);
+      }
+      else {
+        this.vettoreV1?.domFinali.push(new DomandaFine(domande[i].id));
+        this.vDom2.push(domande[i]);
+      }
+    }
   }
 }

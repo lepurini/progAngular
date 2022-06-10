@@ -1,0 +1,14 @@
+<div *ngIf="ok">
+    <!--class="container text-center"-->
+    <p>pag-iniziale works!</p>
+
+    <select name="" id="" [(ngModel)]="questionarioScelto" *ngIf="ok">
+        <option *ngFor="let elemento of vettDati;">{{elemento.id}})
+            {{elemento.titolo}}</option>
+    </select>
+
+    <p>Dal </p>
+    <p>Al</p>
+
+    <button (click)="compila()">Compila</button>
+</div>

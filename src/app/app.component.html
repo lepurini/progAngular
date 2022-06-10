@@ -1,7 +1,15 @@
+
+
 <h1 class="display-4 text-center" id="titolo">QUESTIONARIO VALUTAZIONI</h1>
 
-<div style="display: flex; flex-direction: column;">
-  <app-form></app-form>
+<button routerLink="">home</button>
+<!--<button routerLink="/questionario">asaaas</button>-->
+<button routerLink="/valutatore">valutatore</button>
+<button routerLink="/admin">admin</button>
+
+<div style="display: flex; flex-direction: column;" class="container text-center">
+  <!--<app-form></app-form>-->
+  <router-outlet></router-outlet>
 </div>
 
 <div style="flex-grow:1"></div>

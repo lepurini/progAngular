@@ -13,6 +13,7 @@ export class ValoriValutato {
     data: Date | undefined;
     id_dipendente: number | undefined;
     tipo = 1;
+    id_questionario: number | undefined;
 
     constructor() {
     }

@@ -1,0 +1,11 @@
+<div *ngIf="ok" >
+    <p>valutatore works!</p>
+    <!--<app-pag-iniziale [mostra]="false"></app-pag-iniziale>-->
+    <select name="" id="" [(ngModel)]="questionarioScelto" *ngIf="ok">
+        <option *ngFor="let elemento of vettDati;">{{elemento.id}})
+            {{elemento.titolo}}</option>
+    </select>
+    <br>
+
+    <button (click)="cerca()" style="margin-top: 20px;">Cerca</button>
+</div>
