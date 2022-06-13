@@ -4,6 +4,7 @@
     margin-bottom: 30px;
     /*border: 1.5px black solid;*/
     transition: transform .2s;
+    box-shadow: 6px 6px 3px #888888;
 }
 
 #btnInvia:active {
@@ -38,5 +39,4 @@
 
 .carta:hover {
     transform: scale(1.025);
-    /*background-color: white;*/
 }

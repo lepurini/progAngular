@@ -1,5 +1,4 @@
-<div *ngIf="ok" >
-    <p>valutatore works!</p>
+<div *ngIf="ok">
     <!--<app-pag-iniziale [mostra]="false"></app-pag-iniziale>-->
     <select name="" id="" [(ngModel)]="questionarioScelto" *ngIf="ok">
         <option *ngFor="let elemento of vettDati;">{{elemento.id}})
@@ -7,5 +6,24 @@
     </select>
     <br>
 
-    <button (click)="cerca()" style="margin-top: 20px;">Cerca</button>
+    <!--<button (click)="cerca()" class="btnInvia">Cerca</button>-->
+    <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
+        (click)="cerca()"><b>Cerca</b></button>
+
+    <table *ngIf="ok2" class="table bordo carta">
+        <tbody>
+            <tr *ngFor="let elemento of vettDati2.dipendenti; let ind = index">
+                <td>
+                    <div *ngIf="mostraBtn[ind]; else x">&#9989;</div>
+                    <ng-template #x>&#10060;</ng-template>
+                </td>
+                <td>{{elemento.cognomenome}}</td>
+                <td><button (click)="prova(elemento.cognomenome)" *ngIf="mostraBtn[ind]; else no"
+                        disabled>Notifica</button>
+                    <ng-template #no><button (click)="prova(elemento.cognomenome)">Notifica</button></ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+<!--<ng-template #spalmerino><p>ciao</p></ng-template>-->

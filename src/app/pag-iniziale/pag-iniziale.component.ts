@@ -47,7 +47,6 @@ export class PagInizialeComponent implements OnInit {
       //console.log(this.vettDati[1] + "ciaooiuoiu");
       this.ok = true;
     });
-
   }
 
   compila() {
@@ -58,7 +57,7 @@ export class PagInizialeComponent implements OnInit {
     else { alert("Scegliere un questionario"); }
   }
 
-  metodoFigo(scelta: string): number {
+  /*metodoFigo(scelta: string): number {
     return this.condiviso.ritornaNum(scelta);
-  }
+  }*/
 }

@@ -1,0 +1,21 @@
+#btnInvia {
+    /*background-color: #FAA0A0;*/
+    margin-top: 30px;
+    margin-bottom: 30px;
+    /*border: 1.5px black solid;*/
+    transition: transform .2s;
+    box-shadow: 6px 6px 3px #888888;
+}
+
+#btnInvia:active {
+    transform: scale(0.9);
+    box-shadow: inset 4px 6px 4px 3px #777370 !important;
+}
+
+.sfondoRosso {
+    background-color: #FAA0A0;
+}
+
+.bordoPiccolo {
+    border: black solid 1px;
+}

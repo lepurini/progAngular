@@ -13,6 +13,9 @@ export class ValutatoreComponent implements OnInit {
   url = "http://localhost:8000/";
 
   vettDati: any;
+  vettDati2: any;
+
+  mostraBtn!: boolean[];
 
   ok!: boolean;
   ok2!: boolean;
@@ -30,16 +33,34 @@ export class ValutatoreComponent implements OnInit {
   }
 
   cerca() {
+    this.mostraBtn = [];
     this.ok2 = false;
 
     if (this.questionarioScelto != undefined) {
       //this.url + this.condiviso.ritornaNum(this.questionarioScelto)
       this.condiviso.prendiDati(this.url + "valutatore/" + this.condiviso.ritornaNum(this.questionarioScelto)).subscribe((data: any) => {
         console.log(data);
-        this.vettDati = data;
-      })
+        this.vettDati2 = data;
+        for (let element of this.vettDati2.dipendenti) {
+          this.mostraBtn.push(Boolean(this.controllaUtentiQuestionari(element.id)))
+        }
+        this.ok2 = true;
+      });
     } else {
       alert("Scegliere un questionario")
     }
+  }
+
+  controllaUtentiQuestionari(id: number): boolean {
+    for (let element of this.vettDati2.domande) {
+      if (element.id_dipendente == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  prova(nome: string) {
+    alert(nome);
   }
 }

@@ -24,7 +24,7 @@ export class FormComponent implements OnInit {
   //oggetto che contiene il nome, la data e le risposte al questionario
   vettoreV1: ValoriValutato | undefined;
 
-  url: string | undefined;
+  url = "http://localhost:8000/questionario/";
 
   //variabile che mostra parti della pagina solo quando sono arrivati i dati
   ok: boolean | undefined;
@@ -48,11 +48,11 @@ export class FormComponent implements OnInit {
     else {
       //this.vettoreV1!.id_questionario = this.condiviso.getIdQuestionario();
 
-      this.url = "http://localhost:8000/questionario/" + String(this.vettoreV1.id_questionario /*= this.condiviso.getIdQuestionario()*/);
+      //this.url = "http://localhost:8000/questionario/" + String(this.vettoreV1.id_questionario /*= this.condiviso.getIdQuestionario()*/);
       console.log(this.vettoreV1.id_questionario);
 
 
-      this.condiviso.prendiDati(this.url).subscribe((data: any) => {
+      this.condiviso.prendiDati(this.url + String(this.vettoreV1.id_questionario)).subscribe((data: any) => {
         this.vettDati = data;
         this.dividiDomande(this.vettDati.domande);
         /*for (let i = 0; i < this.vettDati.domande.length; i++) {
