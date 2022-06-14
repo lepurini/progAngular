@@ -1,7 +1,7 @@
 <div class="container text-center" *ngIf="!getFinito(); else finito">
     <div class="row b" style="margin-bottom: 40px;">
         <div class="col order-last">
-            <table class="table">
+            <table class="table" *ngIf="!giaDeciso">
                 <tbody style="float: right;" *ngIf="ok">
                     <tr>
                         <th style="border-bottom: 0px; float: right;">
@@ -15,17 +15,17 @@
                             </select>
                         </th>
                     </tr>
-                    <tr *ngIf="vettDati.valutatore">
+                    <!--<tr *ngIf="vettDati.valutatore">
                         <th style="border-bottom: 0px; float: right;">
                             <p class="scritteRosse">VALUTATORE</p>
                         </th>
                         <th style="border-bottom: 0px;">
-                            <!--<input type="text" [(ngModel)]="nomeValutatore">-->
+                            <input type="text" [(ngModel)]="nomeValutatore">
                             <select name="" id="" [(ngModel)]="this.vettoreV1!.valutatore" *ngIf="ok">
                                 <option *ngFor="let elemento of vettDati.responsabile">{{elemento}}</option>
                             </select>
                         </th>
-                    </tr>
+                    </tr>-->
                 </tbody>
             </table>
         </div>
@@ -84,11 +84,13 @@
                 <th scope="col" class="bordo sfondoRosso"><input type="date" [(ngModel)]="vettoreV1!.data"
                         style="width:1.5em; font-size: 1em"></th>
                 <th scope="col" class="bordo sfondoRosso">
-                    <!--<input type="text" [(ngModel)]="nomeValutato" />-->
-                    <select name="" id="" [(ngModel)]="this.nome" *ngIf="ok">
+                    <!--<input type="text" [(ngModel)]="nomeValutato" />--><div *ngIf="ok">
+                    <select name="" id="" [(ngModel)]="this.nome" *ngIf="!giaDeciso; else nomeGiaDeciso">
                         <option *ngFor="let elemento of vettDati.dipendenti; let ind = index">
                             {{elemento.id}}) {{elemento.cognomenome}}</option>
                     </select>
+                    <ng-template #nomeGiaDeciso><p>{{nome}}</p></ng-template>
+                </div>
                 </th>
                 <!--<th scope="col" *ngIf="valutatore" class="bordo sfondoRosso"><input type="date"></th>
                 <th scope="col" *ngIf="valutatore" class="bordo sfondoRosso"><input type="text"

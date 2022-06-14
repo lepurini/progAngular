@@ -29,6 +29,10 @@ export class FormComponent implements OnInit {
   //variabile che mostra parti della pagina solo quando sono arrivati i dati
   ok: boolean | undefined;
 
+  giaDeciso = false;
+
+  perFine!: boolean;
+
   finito!: boolean;
 
   //vettore contenente le domande della prima parte
@@ -40,16 +44,28 @@ export class FormComponent implements OnInit {
 
   ngOnInit(): void {
     this.setFinito(false);
+    this.perFine = this.condiviso.getDaV();
     this.ok = false;
     this.vettoreV1 = new ValoriValutato();
     if ((this.vettoreV1!.id_questionario = this.condiviso.getIdQuestionario()) == undefined) {
       this.router.navigateByUrl('/');
     }
     else {
+      if (/*this.condiviso.getDaV()*/ this.perFine) {
+        let tmp = this.condiviso.daiDati();
+        this.vettoreV1.id_dipendente = tmp[0];
+        this.vettoreV1.id_valutatore = tmp[1];
+        this.nome = tmp[2];
+        this.vettoreV1.tipo = 2;
+        this.giaDeciso = true;
+        this.condiviso.setDaV(false);
+      } /*else {
+        this.router.navigateByUrl('/');
+      }*/
       //this.vettoreV1!.id_questionario = this.condiviso.getIdQuestionario();
 
       //this.url = "http://localhost:8000/questionario/" + String(this.vettoreV1.id_questionario /*= this.condiviso.getIdQuestionario()*/);
-      console.log(this.vettoreV1.id_questionario);
+      console.log(this.vettoreV1.id_questionario, this.vettoreV1.id_dipendente, this.vettoreV1.id_valutatore);
 
 
       this.condiviso.prendiDati(this.url + String(this.vettoreV1.id_questionario)).subscribe((data: any) => {
@@ -72,7 +88,7 @@ export class FormComponent implements OnInit {
       })
     }
 
-
+    console.log(this.vettoreV1.id_questionario, this.vettoreV1.id_dipendente, this.vettoreV1.id_valutatore);
     //richiesta al server
     /*this.miohttp.get(/*"http://localhost:8000/questionario/" + String(this.vettoreV1.id_questionario) this.url).subscribe((dati) => {
       console.log(dati);
@@ -94,7 +110,7 @@ export class FormComponent implements OnInit {
     });*/
 
 
-
+    console.log(this.vettoreV1.id_questionario, this.vettoreV1.id_dipendente, this.vettoreV1.id_valutatore);
     this.valutatore = false;
 
     for (let index = 1; index < 6; index++) {
@@ -172,10 +188,14 @@ export class FormComponent implements OnInit {
     try {
       this.noVuoto()
       console.log(this.vettoreV1?.data);
-      this.vettoreV1!.id_dipendente = Number(this.nome?.substring(0, this.nome.indexOf(")")));
+      if (/*!this.condiviso.getDaV()*/ !this.perFine) {
+        this.vettoreV1!.id_dipendente = Number(this.nome?.substring(0, this.nome.indexOf(")")));
+      }
       //this.vettoreV1!.id_questionario = this.condiviso.getIdQuestionario();
       return this.miohttp.post("http://localhost:8000", JSON.stringify(this.vettoreV1), { responseType: 'text' }).subscribe((data) => {
         console.log(data);
+        this.condiviso.setDaV(false);
+        //this.giaDeciso = false;
         this.setFinito(Boolean(data));
         //this.finito = Boolean(data);
         console.log(this.finito);

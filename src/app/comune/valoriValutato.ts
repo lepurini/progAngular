@@ -9,7 +9,7 @@ export class ValoriValutato {
     risposteDomande: Domanda[] = [];
 
     
-    valutatore: string | undefined;
+    id_valutatore: number | undefined;
     data: Date | undefined;
     id_dipendente: number | undefined;
     tipo = 1;

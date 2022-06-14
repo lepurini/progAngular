@@ -10,6 +10,12 @@ export class CondivisoService {
   idQuestionario: number | undefined;
   vettDati: any;
 
+  daValutatore = false;
+
+  //interface datiDaPassare = { idValutatore: any; idValutato: any; idQuestionario: any }
+  idDaPassare: any[] = [];
+
+
   constructor(private miohttp: HttpClient) { }
 
   ritornaNum(scelta: string): number {
@@ -32,5 +38,24 @@ export class CondivisoService {
       return this.vettDati;
     });*/
     return this.miohttp.get(url);
+  }
+
+  passaDatiResponsabile(idValutatore: number, idValutato: number, idQuestionario: number, nome: string) {
+    this.setIdQuestionario(idQuestionario);
+    this.idDaPassare[0] = idValutato;
+    this.idDaPassare[1] = idValutatore;
+    this.idDaPassare[2] = nome;
+  }
+
+  daiDati(): any[]{
+    return this.idDaPassare;
+  }
+
+  getDaV(): boolean {
+    return this.daValutatore
+  }
+
+  setDaV(b: boolean) {
+    this.daValutatore = b;
   }
 }

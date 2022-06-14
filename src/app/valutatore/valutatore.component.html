@@ -1,6 +1,11 @@
 <div *ngIf="ok">
+
+    <select name="" id="" [(ngModel)]="vNome" style="margin-bottom: 20px;">
+        <option *ngFor="let elemento of vettDati3;">{{elemento.id}})
+            {{elemento.cognomenome}}</option>
+    </select><br>
     <!--<app-pag-iniziale [mostra]="false"></app-pag-iniziale>-->
-    <select name="" id="" [(ngModel)]="questionarioScelto" *ngIf="ok">
+    <select name="" id="" [(ngModel)]="questionarioScelto">
         <option *ngFor="let elemento of vettDati;">{{elemento.id}})
             {{elemento.titolo}}</option>
     </select>
@@ -18,12 +23,14 @@
                     <ng-template #x>&#10060;</ng-template>
                 </td>
                 <td>{{elemento.cognomenome}}</td>
-                <td><button (click)="prova(elemento.cognomenome)" *ngIf="mostraBtn[ind]; else no"
-                        disabled>Notifica</button>
-                    <ng-template #no><button (click)="prova(elemento.cognomenome)">Notifica</button></ng-template>
+                <td><button *ngIf="mostraBtn[ind]; else no" disabled>Compila</button>
+                    <ng-template #no><button
+                            (click)="valuta(this.ritornaId(this.vNome),elemento.id,this.ritornaId(questionarioScelto),elemento.cognomenome)">Compila</button>
+                    </ng-template>
                 </td>
             </tr>
         </tbody>
     </table>
+
 </div>
 <!--<ng-template #spalmerino><p>ciao</p></ng-template>-->
