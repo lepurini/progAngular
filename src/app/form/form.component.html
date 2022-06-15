@@ -1,33 +1,22 @@
 <div class="container text-center" *ngIf="!getFinito(); else finito">
     <div class="row b" style="margin-bottom: 40px;">
         <div class="col order-last">
-            <table class="table" *ngIf="!giaDeciso">
+            <!--<table class="table" *ngIf="!giaDeciso">
                 <tbody style="float: right;" *ngIf="ok">
                     <tr>
                         <th style="border-bottom: 0px; float: right;">
                             <p class="scritteRosse">VALUTATO</p>
                         </th>
                         <th style="border-bottom: 0px;">
-                            <!--<input type="text" [(ngModel)]="nomeValutato">-->
+                            <input type="text" [(ngModel)]="nomeValutato">
                             <select name="" id="" [(ngModel)]="this.nome" *ngIf="ok">
                                 <option *ngFor="let elemento of vettDati.dipendenti;">{{elemento.id}})
                                     {{elemento.cognomenome}}</option>
                             </select>
                         </th>
                     </tr>
-                    <!--<tr *ngIf="vettDati.valutatore">
-                        <th style="border-bottom: 0px; float: right;">
-                            <p class="scritteRosse">VALUTATORE</p>
-                        </th>
-                        <th style="border-bottom: 0px;">
-                            <input type="text" [(ngModel)]="nomeValutatore">
-                            <select name="" id="" [(ngModel)]="this.vettoreV1!.valutatore" *ngIf="ok">
-                                <option *ngFor="let elemento of vettDati.responsabile">{{elemento}}</option>
-                            </select>
-                        </th>
-                    </tr>-->
                 </tbody>
-            </table>
+            </table>-->
         </div>
         <div class="col order-first ">
             <table class="table bordo carta">

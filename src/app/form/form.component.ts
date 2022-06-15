@@ -44,6 +44,9 @@ export class FormComponent implements OnInit {
 
   ngOnInit(): void {
     this.setFinito(false);
+    /*if (this.perFine = this.condiviso.getDaV()) {
+      this.router.navigateByUrl('/valutatore');
+    }*/
     this.perFine = this.condiviso.getDaV();
     this.ok = false;
     this.vettoreV1 = new ValoriValutato();
@@ -59,6 +62,7 @@ export class FormComponent implements OnInit {
         this.vettoreV1.tipo = 2;
         this.giaDeciso = true;
         this.condiviso.setDaV(false);
+        //this.condiviso.setIdQuestionario(Number(undefined));
       } /*else {
         this.router.navigateByUrl('/');
       }*/
