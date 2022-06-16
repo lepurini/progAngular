@@ -12,6 +12,7 @@ import { PagInizialeComponent } from './pag-iniziale/pag-iniziale.component';
 import { ValutatoreComponent } from './valutatore/valutatore.component';
 import { AdminComponent } from './admin/admin.component';
 
+
 const LISTA = [
   { path: '', component: PagInizialeComponent },
   { path: 'questionario', component: FormComponent },
@@ -26,7 +27,8 @@ const LISTA = [
     FinitoComponent,
     PagInizialeComponent,
     ValutatoreComponent,
-    AdminComponent
+    AdminComponent,
+    
   ],
   imports: [
     BrowserModule,

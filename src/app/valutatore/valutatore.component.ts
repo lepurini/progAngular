@@ -9,8 +9,7 @@ import { CondivisoService } from '../condiviso.service';
 })
 export class ValutatoreComponent implements OnInit {
 
-  questionarioScelto!
-    : string;
+  questionarioScelto!: string;
 
   url = "http://localhost:8000/";
 
@@ -21,6 +20,9 @@ export class ValutatoreComponent implements OnInit {
   mostraBtn!: boolean[];
 
   vNome!: string;
+
+  idValutatoreScelto!: number;
+  idQuestionarioScelto!: number;
 
   ok!: boolean;
   ok2!: boolean;
@@ -48,10 +50,12 @@ export class ValutatoreComponent implements OnInit {
     this.ok2 = false;
 
     if (this.questionarioScelto != undefined && this.vNome != undefined) {
+      this.idValutatoreScelto = this.condiviso.ritornaNum(this.vNome);
+      this.idQuestionarioScelto = this.condiviso.ritornaNum(this.questionarioScelto);
       //this.url + this.condiviso.ritornaNum(this.questionarioScelto)
       //console.log(this.vNome.substring(this.vNome.indexOf(')')+ 1));
-      console.log(this.url + "v/" + this.vNome.substring(this.vNome.indexOf(')') + 2) + "/" + this.condiviso.ritornaNum(this.vNome) + "/" + this.condiviso.ritornaNum(this.questionarioScelto));
-      this.condiviso.prendiDati(this.url + "v/" + this.vNome.substring(this.vNome.indexOf(')') + 2) + "/" + this.condiviso.ritornaNum(this.vNome) + "/" + this.condiviso.ritornaNum(this.questionarioScelto)).subscribe((data: any) => {
+      console.log("Bubbbba ------ " + this.url + "v/" + this.vNome.substring(this.vNome.indexOf(')') + 2) + "/" + this.idValutatoreScelto/*this.condiviso.ritornaNum(this.vNome)*/ + "/" + this.idQuestionarioScelto/*this.condiviso.ritornaNum(this.questionarioScelto)*/);
+      this.condiviso.prendiDati(this.url + "v/" + this.vNome.substring(this.vNome.indexOf(')') + 2) + "/" + /*this.condiviso.ritornaNum(this.vNome)*/ this.idValutatoreScelto + "/" + this.idQuestionarioScelto/*this.condiviso.ritornaNum(this.questionarioScelto)*/).subscribe((data: any) => {
         console.log(data);
         this.vettDati2 = data;
         for (let element of this.vettDati2.dipendenti) {

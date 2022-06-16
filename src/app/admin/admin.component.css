@@ -1,8 +1,4 @@
 #btnInvia {
-    /*background-color: #FAA0A0;*/
-    margin-top: 30px;
-    margin-bottom: 30px;
-    /*border: 1.5px black solid;*/
     transition: transform .2s;
     box-shadow: 6px 6px 3px #888888;
 }
