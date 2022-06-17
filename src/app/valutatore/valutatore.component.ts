@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DomandaFine } from '../comune/domandaFine';
 import { CondivisoService } from '../condiviso.service';
 
 @Component({
@@ -16,16 +17,24 @@ export class ValutatoreComponent implements OnInit {
   vettDati: any;
   vettDati2: any;
   vettDati3: any;
+  vettDati4: any;
+
+  dataScelta!: string;
 
   mostraBtn!: boolean[];
 
   vNome!: string;
 
+  idDipendente!: number;
   idValutatoreScelto!: number;
   idQuestionarioScelto!: number;
 
   ok!: boolean;
   ok2!: boolean;
+  ok3!: boolean;
+  ok4!: boolean;
+
+  date: DomandaFine[] = [];
 
   //mostra: boolean | undefined;
 
@@ -47,7 +56,7 @@ export class ValutatoreComponent implements OnInit {
 
   cerca() {
     this.mostraBtn = [];
-    this.ok2 = false;
+    this.ok2 = this.ok3 = this.ok4 = false;
 
     if (this.questionarioScelto != undefined && this.vNome != undefined) {
       this.idValutatoreScelto = this.condiviso.ritornaNum(this.vNome);
@@ -89,4 +98,40 @@ export class ValutatoreComponent implements OnInit {
   ritornaId(nome: string): number {
     return this.condiviso.ritornaNum(nome);
   }
+
+  passaDipendente(id: number) {
+    this.date = [];
+    this.ok3 = false;
+    this.ok4 = false;
+    this.idDipendente = id;
+    //this.idQuestionario!= undefined;
+    //alert(this.idDipendente);
+
+    for (let elemento of this.vettDati2.domande) {
+      if (this.idDipendente == elemento.id_dipendente) {
+        this.date.push(new DomandaFine(elemento.id));
+        this.date[this.date.length - 1].nota = String(elemento.data).substring(0, String(elemento.data).indexOf("T"));
+        console.log(this.date[this.date.length - 1].nota);
+      }
+    }
+
+    this.ok3 = true;
+  }
+
+  prendiRisposteQuestionario() {
+    if (this.dataScelta != undefined) {
+      const a = Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1;
+      alert(a);
+      alert(this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda);
+
+      this.condiviso.prendiDati(this.url + "prendiRiposte/" + this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda + "/" + this.idQuestionarioScelto).subscribe((data: any) => {
+        console.log(this.vettDati4 = data);
+        this.ok4 = true;
+      });
+    }
+    else {
+      alert("Scegliere una data");
+    }
+  }
+
 }

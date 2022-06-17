@@ -35,14 +35,25 @@
     </table>
 
     <div *ngIf="ok3">
-        <select name="" id="" *ngIf="ok">
-            <option *ngFor="let elemento of date;">
-                {{elemento.nota}}</option>
+        <select name="" id="" *ngIf="ok" [(ngModel)]="dataScelta" style="margin-right: 15px;">
+            <option *ngFor="let elemento of date; let i = index">
+                {{i + 1}}) {{elemento.nota}}</option>
         </select>
         <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
-            style="margin-top: 30px; margin-bottom: 30px;" (click)="cerca()"><b>Cerca</b></button>
+            style="margin-top: 30px; margin-bottom: 30px;" (click)="prendiRisposteQuestionario()"><b>Cerca</b></button>
         <div *ngIf="ok4">
-
+            <table>
+                <tbody>
+                    <!--<tr *ngFor="elemento of vettDati3.dipendenti; let i = index">
+                        <td>{{elemento.nota}}</td>
+                    </tr>-->
+                    <tr *ngFor="let elemento of vettDati3.dipendenti; let i = index" style="margin-bottom: 30px; border-bottom: 1px solid gray;">
+                        <td style="width: 45%;">{{vettDati3.domande[i].titolodomanda}}<p style="word-break: break-all;">{{vettDati3.domande[i].descrizione}}</p></td>
+                        <td style="width: 45%;">{{elemento.note}}</td>
+                        <td style="width: 10%;" >{{elemento.punteggio}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
