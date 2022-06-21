@@ -21,12 +21,16 @@ export class ValutatoreComponent implements OnInit {
   vettDati2: any;
   vettDati3: any;
   vettDati4: any;
+  vettDati5: any;
 
   dataScelta!: string;
+  dataSenza!: string;
 
   mostraBtn!: boolean[];
 
   vNome!: string;
+  nomeValutato!: string;
+  nomeValutatoreSistemato!: string;
 
   idDipendente!: number;
   idValutatoreScelto!: number;
@@ -36,6 +40,8 @@ export class ValutatoreComponent implements OnInit {
   ok2!: boolean;
   ok3!: boolean;
   ok4!: boolean;
+
+  Mostrare = true;
 
   date: DomandaFine[] = [];
 
@@ -64,10 +70,9 @@ export class ValutatoreComponent implements OnInit {
     if (this.questionarioScelto != undefined && this.vNome != undefined) {
       this.idValutatoreScelto = this.condiviso.ritornaNum(this.vNome);
       this.idQuestionarioScelto = this.condiviso.ritornaNum(this.questionarioScelto);
-      //this.url + this.condiviso.ritornaNum(this.questionarioScelto)
-      //console.log(this.vNome.substring(this.vNome.indexOf(')')+ 1));
-      console.log("Bubbbba ------ " + this.url + "v/" + this.vNome.substring(this.vNome.indexOf(')') + 2) + "/" + this.idValutatoreScelto/*this.condiviso.ritornaNum(this.vNome)*/ + "/" + this.idQuestionarioScelto/*this.condiviso.ritornaNum(this.questionarioScelto)*/);
-      this.condiviso.prendiDati(this.url + "v/" + this.vNome.substring(this.vNome.indexOf(')') + 2) + "/" + /*this.condiviso.ritornaNum(this.vNome)*/ this.idValutatoreScelto + "/" + this.idQuestionarioScelto/*this.condiviso.ritornaNum(this.questionarioScelto)*/).subscribe((data: any) => {
+      this.nomeValutatoreSistemato = this.vNome.substring(this.vNome.indexOf(')') + 2)
+      console.log("Bubbbba ------ " + this.url + "v/" + /*this.vNome.substring(this.vNome.indexOf(')') + 2)*/ this.nomeValutatoreSistemato + "/" + this.idValutatoreScelto/*this.condiviso.ritornaNum(this.vNome)*/ + "/" + this.idQuestionarioScelto/*this.condiviso.ritornaNum(this.questionarioScelto)*/);
+      this.condiviso.prendiDati(this.url + "v/" + /*this.vNome.substring(this.vNome.indexOf(')') + 2)*/ this.nomeValutatoreSistemato + "/" + this.idValutatoreScelto + "/" + this.idQuestionarioScelto/*this.condiviso.ritornaNum(this.questionarioScelto)*/).subscribe((data: any) => {
         console.log(data);
         this.vettDati2 = data;
         for (let element of this.vettDati2.dipendenti) {
@@ -102,13 +107,14 @@ export class ValutatoreComponent implements OnInit {
     return this.condiviso.ritornaNum(nome);
   }
 
-  passaDipendente(id: number) {
+  passaDipendente(id: number, cognomenome: string) {
     this.date = [];
-    this.ok3 = false;
-    this.ok4 = false;
+    this.dataScelta != undefined;
+    //this.ok3 = false;
+    this.ok3 = this.ok4 = false;
     this.idDipendente = id;
-    //this.idQuestionario!= undefined;
-    //alert(this.idDipendente);
+    this.nomeValutato = cognomenome;
+    console.log(this.nomeValutato);
 
     for (let elemento of this.vettDati2.domande) {
       if (this.idDipendente == elemento.id_dipendente) {
@@ -122,17 +128,31 @@ export class ValutatoreComponent implements OnInit {
   }
 
   prendiRisposteQuestionario() {
+    this.Mostrare = true;
     if (this.dataScelta != undefined) {
+      this.dataSenza = this.dataScelta.substring(this.dataScelta.indexOf(")") + 1);
+
       const a = Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1;
-      alert(a);
-      alert(this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda);
+      //alert(a);
+      //alert(this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda);
 
       this.condiviso.prendiDati(this.url + "prendiRiposte/" + this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda + "/" + this.idQuestionarioScelto).subscribe((data: any) => {
         console.log(this.vettDati4 = data);
+
+      });
+
+      this.condiviso.prendiDati(this.url + "prendiRisposteDipendente/" + this.idDipendente + "/" + this.idQuestionarioScelto).subscribe((risposta: any) => {
+        if (risposta[0] == null) {
+          this.Mostrare = false;
+        } else {
+          this.vettDati5 = risposta;
+          console.log(risposta)
+        }
         this.ok4 = true;
       });
     }
     else {
+      console.log(this.dataScelta);
       alert("Scegliere una data");
     }
   }

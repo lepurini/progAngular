@@ -21,7 +21,7 @@
                 <td>
                     <div *ngIf="mostraBtn[ind]; else no"><button type="button"
                             class="btn sfondoRosso bordoPiccolo btn-sm" disabled>Notifica</button><button
-                            style="margin-left: 8px;" (click)="passaDipendente(elemento.id)" id="btnInvia"
+                            style="margin-left: 8px;" (click)="passaDipendente(elemento.id, elemento.responsabile)" id="btnInvia"
                             class="btn sfondoRosso bordoPiccolo btn-sm" type="button">mostra</button></div>
                     <ng-template #no><button (click)="prova(elemento.cognomenome)" id="btnInvia"
                             class="btn sfondoRosso bordoPiccolo btn-sm" type="button">Notifica</button>

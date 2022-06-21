@@ -80,7 +80,7 @@ export class AdminComponent implements OnInit {
     alert(nome);
   }
 
-  passaDipendente(id: number) {
+  passaDipendente(id: number, responsabile: string) {
     this.date = [];
     this.ok4 = this.ok3 = false;
     //this.ok4 = false;
