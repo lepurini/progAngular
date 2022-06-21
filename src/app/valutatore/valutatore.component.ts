@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomandaFine } from '../comune/domandaFine';
 import { CondivisoService } from '../condiviso.service';
+import { jsPDF } from 'jspdf';
+import domtoimage from 'dom-to-image';
+
 
 @Component({
   selector: 'app-valutatore',
@@ -134,4 +137,21 @@ export class ValutatoreComponent implements OnInit {
     }
   }
 
+  toPdf() {
+    const dashboard = document.getElementById('dashboard');
+
+    const dashboardHeight = dashboard!.clientHeight;
+    const dashboardWidth = dashboard!.clientWidth;
+    const options = { background: 'white', width: dashboardWidth, height: dashboardHeight };
+
+    domtoimage.toPng(dashboard!, options).then((imgData) => {
+      const doc = new jsPDF(dashboardWidth > dashboardHeight ? 'l' : 'p', 'mm', [dashboardWidth, dashboardHeight]);
+      const imgProps = doc.getImageProperties(imgData);
+      const pdfWidth = doc.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+      doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      doc.save('documento.pdf');
+    });
+  }
 }

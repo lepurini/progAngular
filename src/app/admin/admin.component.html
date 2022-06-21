@@ -1,4 +1,3 @@
-<p>admin works!</p>
 <div *ngIf="ok">
     <!--<app-pag-iniziale [mostra]="false"></app-pag-iniziale>-->
     <select name="" id="" [(ngModel)]="questionarioScelto" *ngIf="ok">
@@ -7,9 +6,9 @@
     </select>
     <br>
 
-    <!--<button (click)="cerca()" class="btnInvia">Cerca</button>-->
     <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
         style="margin-top: 30px; margin-bottom: 30px;" (click)="cerca()"><b>Cerca</b></button>
+
 
     <table *ngIf="ok2" class="table bordo carta">
         <tbody>
@@ -41,19 +40,22 @@
         </select>
         <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
             style="margin-top: 30px; margin-bottom: 30px;" (click)="prendiRisposteQuestionario()"><b>Cerca</b></button>
-        <div *ngIf="ok4">
-            <table>
-                <tbody>
-                    <!--<tr *ngFor="elemento of vettDati3.dipendenti; let i = index">
-                        <td>{{elemento.nota}}</td>
-                    </tr>-->
-                    <tr *ngFor="let elemento of vettDati3.dipendenti; let i = index" style="margin-bottom: 30px; border-bottom: 1px solid gray;">
-                        <td style="width: 45%;">{{vettDati3.domande[i].titolodomanda}}<p style="word-break: break-all;">{{vettDati3.domande[i].descrizione}}</p></td>
-                        <td style="width: 45%;">{{elemento.note}}</td>
-                        <td style="width: 10%;" >{{elemento.punteggio}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <br>
+        <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
+            style="margin-bottom: 25px;margin-top: 10px;" (click)="toPdf()" *ngIf="ok4"><b>PDF</b></button>
+        <!--<button  (click)="toPdf()">pdf</button>-->
+        <table *ngIf="ok4" class="bordo carta" style="margin-bottom: 50px; " id="dashboard">
+            <tbody>
+                <tr *ngFor="let elemento of vettDati3.dipendenti; let i = index" class="bordoPiccolo">
+                    <td style="width: 45%;">
+                        <p class="scritteRosse">{{vettDati3.domande[i].titolodomanda}}</p>
+                        <p style="word-break: break-all;">
+                            {{vettDati3.domande[i].descrizione}}</p>
+                    </td>
+                    <td style="width: 45%;">{{elemento.note}}</td>
+                    <td style="width: 10%;">{{elemento.punteggio}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

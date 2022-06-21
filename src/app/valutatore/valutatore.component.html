@@ -44,20 +44,22 @@
                 {{i + 1}}) {{elemento.nota}}</option>
         </select>
         <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
-            style="margin-top: 30px; margin-bottom: 30px;" (click)="prendiRisposteQuestionario()"><b>Cerca</b></button>
-        <div *ngIf="ok4">
-            <table>
-                <tbody>
-                    <!--<tr *ngFor="elemento of vettDati3.dipendenti; let i = index">
-                        <td>{{elemento.nota}}</td>
-                    </tr>-->
-                    <tr *ngFor="let elemento of vettDati4.dipendenti; let i = index" style="margin-bottom: 30px; border-bottom: 1px solid gray;">
-                        <td style="width: 45%;">{{vettDati4.domande[i].titolodomanda}}<p style="word-break: break-all;">{{vettDati4.domande[i].descrizione}}</p></td>
-                        <td style="width: 45%;">{{elemento.note}}</td>
-                        <td style="width: 10%;" >{{elemento.punteggio}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            style="margin-top: 30px; margin-bottom: 30px;"
+            (click)="prendiRisposteQuestionario()"><b>Cerca</b></button><br>
+        <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
+            style="margin-bottom: 25px;margin-top: 10px;" (click)="toPdf()" *ngIf="ok4"><b>PDF</b></button>
+        <table *ngIf="ok4" class="bordo carta" style="margin-bottom: 50px;" id="dashboard">
+            <tbody>
+                <tr *ngFor="let elemento of vettDati4.dipendenti; let i = index" class="bordoPiccolo">
+                    <td style="width: 45%;">
+                        <p class="scritteRosse">{{vettDati4.domande[i].titolodomanda}}</p>
+                        <p style="word-break: break-all;">
+                            {{vettDati4.domande[i].descrizione}}</p>
+                    </td>
+                    <td style="width: 45%;">{{elemento.note}}</td>
+                    <td style="width: 10%;">{{elemento.punteggio}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
