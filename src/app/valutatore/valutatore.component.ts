@@ -40,6 +40,7 @@ export class ValutatoreComponent implements OnInit {
   ok2!: boolean;
   ok3!: boolean;
   ok4!: boolean;
+  //ok5!: boolean;
 
   Mostrare = true;
 
@@ -71,8 +72,8 @@ export class ValutatoreComponent implements OnInit {
       this.idValutatoreScelto = this.condiviso.ritornaNum(this.vNome);
       this.idQuestionarioScelto = this.condiviso.ritornaNum(this.questionarioScelto);
       this.nomeValutatoreSistemato = this.vNome.substring(this.vNome.indexOf(')') + 2)
-      console.log("Bubbbba ------ " + this.url + "v/" + /*this.vNome.substring(this.vNome.indexOf(')') + 2)*/ this.nomeValutatoreSistemato + "/" + this.idValutatoreScelto/*this.condiviso.ritornaNum(this.vNome)*/ + "/" + this.idQuestionarioScelto/*this.condiviso.ritornaNum(this.questionarioScelto)*/);
-      this.condiviso.prendiDati(this.url + "v/" + /*this.vNome.substring(this.vNome.indexOf(')') + 2)*/ this.nomeValutatoreSistemato + "/" + this.idValutatoreScelto + "/" + this.idQuestionarioScelto/*this.condiviso.ritornaNum(this.questionarioScelto)*/).subscribe((data: any) => {
+      console.log(this.url + "v/" + this.nomeValutatoreSistemato + "/" + this.idValutatoreScelto + "/" + this.idQuestionarioScelto);
+      this.condiviso.prendiDati(this.url + "v/" + this.nomeValutatoreSistemato + "/" + this.idValutatoreScelto + "/" + this.idQuestionarioScelto).subscribe((data: any) => {
         console.log(data);
         this.vettDati2 = data;
         for (let element of this.vettDati2.dipendenti) {
@@ -109,9 +110,8 @@ export class ValutatoreComponent implements OnInit {
 
   passaDipendente(id: number, cognomenome: string) {
     this.date = [];
-    this.dataScelta != undefined;
-    //this.ok3 = false;
-    this.ok3 = this.ok4 = false;
+    //this.dataScelta != undefined;
+    /*this.ok5 = */this.ok3 = this.ok4 = false;
     this.idDipendente = id;
     this.nomeValutato = cognomenome;
     console.log(this.nomeValutato);
@@ -125,6 +125,7 @@ export class ValutatoreComponent implements OnInit {
     }
 
     this.ok3 = true;
+    //this.ok5 = true;
   }
 
   prendiRisposteQuestionario() {
@@ -136,7 +137,7 @@ export class ValutatoreComponent implements OnInit {
       //alert(a);
       //alert(this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda);
 
-      this.condiviso.prendiDati(this.url + "prendiRiposte/" + this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda + "/" + this.idQuestionarioScelto).subscribe((data: any) => {
+    this.condiviso.prendiDati(this.url + "prendiRiposte/" + this.date[a /*Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1*/].id_domanda + "/" + this.idQuestionarioScelto).subscribe((data: any) => {
         console.log(this.vettDati4 = data);
 
       });
@@ -152,7 +153,7 @@ export class ValutatoreComponent implements OnInit {
       });
     }
     else {
-      console.log(this.dataScelta);
+        console.log(this.dataScelta);
       alert("Scegliere una data");
     }
   }

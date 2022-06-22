@@ -34,8 +34,8 @@
     </table>
 
     <div *ngIf="ok3">
-        <select name="" id="" *ngIf="ok" [(ngModel)]="dataScelta" style="margin-right: 15px;">
-            <option *ngFor="let elemento of date; let i = index">
+        <select name="" id="" [(ngModel)]="dataScelta" style="margin-right: 15px;" >
+            <option *ngFor="let elemento of date; let i = index" value="{{i + 1}}){{elemento.nota}}">
                 {{i + 1}}) {{elemento.nota}}</option>
         </select>
         <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"

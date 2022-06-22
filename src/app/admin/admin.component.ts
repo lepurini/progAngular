@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DomandaFine } from '../comune/domandaFine';
 import { CondivisoService } from '../condiviso.service';
+import { FormsModule } from '@angular/forms';
 import { jsPDF } from 'jspdf';
 import domtoimage from 'dom-to-image';
 
@@ -90,7 +91,9 @@ export class AdminComponent implements OnInit {
       if (this.idDipendente == elemento.id_dipendente) {
         this.date.push(new DomandaFine(elemento.id));
         this.date[this.date.length - 1].nota = String(elemento.data).substring(0, String(elemento.data).indexOf("T"));
-        console.log(this.date[this.date.length - 1].nota);
+        // console.log("passaDipendente");
+        // console.log(this.date[this.date.length - 1].nota);
+        // console.log(this.dataScelta);
       }
     }
 
@@ -100,17 +103,24 @@ export class AdminComponent implements OnInit {
   prendiRisposteQuestionario() {
     if (this.dataScelta != undefined) {
       const a = Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1;
-      alert(a);
-      alert(this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda);
 
-      this.condiviso.prendiDati(this.url + "prendiRiposte/" + this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda + "/" + this.idQuestionario).subscribe((data: any) => {
+      this.condiviso.prendiDati(this.url + "prendiRiposte/" + this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")")))- 1].id_domanda + "/" + this.idQuestionario).subscribe((data: any) => { 
+        console.log("dopo prendiDati");
+        console.log(data);
         console.log(this.vettDati3 = data);
         this.ok4 = true;
       });
     }
     else {
+      console.log("richieste risposte questionario");
+      console.log(this.dataScelta);
+      console.log(this.date);
       alert("Scegliere una data");
     }
+  }
+
+  selectLog(){
+
   }
 
   toPdf() {
