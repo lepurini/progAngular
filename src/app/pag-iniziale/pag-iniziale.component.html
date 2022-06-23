@@ -1,15 +1,16 @@
 <div *ngIf="ok">
-    <!--class="container text-center"-->
-    <p>pag-iniziale works!</p>
+    <!--class="container text-center"
+    <p>pag-iniziale works!</p>-->
 
     <select name="" id="" [(ngModel)]="questionarioScelto" *ngIf="ok">
         <option *ngFor="let elemento of vettDati;">{{elemento.id}})
             {{elemento.titolo}}</option>
     </select>
 
-    <p>Dal </p>
-    <p>Al</p>
+    <!--<p>Dal </p>
+    <p>Al</p>--><br>
 
     <!--<button (click)="compila()">Compila</button>-->
-    <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia" (click)="compila()" ><b>Compila</b></button>
+    <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
+        (click)="compila()"><b>Compila</b></button>
 </div>

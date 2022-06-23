@@ -137,9 +137,8 @@ export class ValutatoreComponent implements OnInit {
       //alert(a);
       //alert(this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda);
 
-    this.condiviso.prendiDati(this.url + "prendiRiposte/" + this.date[a /*Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1*/].id_domanda + "/" + this.idQuestionarioScelto).subscribe((data: any) => {
+      this.condiviso.prendiDati(this.url + "prendiRiposte/" + this.date[a /*Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1*/].id_domanda + "/" + this.idQuestionarioScelto).subscribe((data: any) => {
         console.log(this.vettDati4 = data);
-
       });
 
       this.condiviso.prendiDati(this.url + "prendiRisposteDipendente/" + this.idDipendente + "/" + this.idQuestionarioScelto).subscribe((risposta: any) => {
@@ -147,13 +146,65 @@ export class ValutatoreComponent implements OnInit {
           this.Mostrare = false;
         } else {
           this.vettDati5 = risposta;
-          console.log(risposta)
+          console.log(risposta);
+
+          let vettoreConDomandeGiuste: any[] = [];
+
+          /*for (let i = 0; i < this.vettDati5.length; i++) {
+            let continua = true;
+            /*if (this.vettDati5[i].id_domanda == this.vettDati4.domande[i].id) {
+              vettoreConDomandeGiuste.push(this.vettDati5[i]);
+            } else {
+              vettoreConDomandeGiuste.push(null);
+            }
+            for (let j = 0; j < this.vettDati4.domande.length && continua; j++) {
+              if (this.vettDati5[i].id_domanda == this.vettDati4.domande[j].id) {
+                vettoreConDomandeGiuste.push(this.vettDati5[i]);
+                continua = false;
+              }
+              
+            }
+            if (continua) {
+              vettoreConDomandeGiuste.push(this.vettDati5[0]);
+              vettoreConDomandeGiuste[vettoreConDomandeGiuste.length - 1].note = null;
+              vettoreConDomandeGiuste[vettoreConDomandeGiuste.length - 1].punteggio = null;
+            }
+          }*/
+
+          for (let i = 0; i < this.vettDati4.domande.length; i++) {
+            let continua = true;
+
+            for (let j = 0; j < this.vettDati5.length && continua; j++) {
+              if (this.vettDati5[j].id_domanda == this.vettDati4.domande[i].id) {
+                vettoreConDomandeGiuste.push(this.vettDati5[j]);
+                continua = false;
+              }
+            }
+
+            if (continua) {
+              console.log(this.vettDati5[0]);
+              let tmp = Object.create(this.vettDati5[0]);
+              tmp.note = null;
+              tmp.punteggio = null;
+              vettoreConDomandeGiuste.push(tmp);
+              //vettoreConDomandeGiuste[vettoreConDomandeGiuste.length - 1].note = null;
+              //vettoreConDomandeGiuste[vettoreConDomandeGiuste.length - 1].punteggio = null;
+              console.log(this.vettDati5[0]);
+            }
+          }
+
+          console.log("quiiiiiiiiiii");
+          console.log(vettoreConDomandeGiuste);
+
+          this.vettDati5 = vettoreConDomandeGiuste;
+
+          //this.ok4 = true;
         }
         this.ok4 = true;
       });
     }
     else {
-        console.log(this.dataScelta);
+      console.log(this.dataScelta);
       alert("Scegliere una data");
     }
   }

@@ -21,9 +21,10 @@
                 <td>
                     <div *ngIf="mostraBtn[ind]; else no"><button type="button"
                             class="btn sfondoRosso bordoPiccolo btn-sm" disabled>Notifica</button><button
-                            style="margin-left: 8px;" (click)="passaDipendente(elemento.id, elemento.responsabile)" id="btnInvia"
-                            class="btn sfondoRosso bordoPiccolo btn-sm" type="button">mostra</button></div>
-                    <ng-template #no><button (click)="prova(elemento.cognomenome)" id="btnInvia"
+                            style="margin-left: 8px;" (click)="passaDipendente(elemento.id, elemento.responsabile)"
+                            id="btnInvia" class="btn sfondoRosso bordoPiccolo btn-sm" type="button">mostra</button>
+                    </div>
+                    <ng-template #no><button (click)="prova(elemento.uuid, elemento.id)" id="btnInvia"
                             class="btn sfondoRosso bordoPiccolo btn-sm" type="button">Notifica</button>
                         <button disabled style="margin-left: 8px;" id="btnInvia"
                             class="btn sfondoRosso bordoPiccolo btn-sm" type="button">mostra</button>
@@ -34,7 +35,7 @@
     </table>
 
     <div *ngIf="ok3">
-        <select name="" id="" [(ngModel)]="dataScelta" style="margin-right: 15px;" >
+        <select name="" id="" [(ngModel)]="dataScelta" style="margin-right: 15px;">
             <option *ngFor="let elemento of date; let i = index" value="{{i + 1}}){{elemento.nota}}">
                 {{i + 1}}) {{elemento.nota}}</option>
         </select>
@@ -43,10 +44,10 @@
         <br>
         <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
             style="margin-bottom: 25px;margin-top: 10px;" (click)="toPdf()" *ngIf="ok4"><b>PDF</b></button>
-        <!--<button  (click)="toPdf()">pdf</button>-->
         <table *ngIf="ok4" class="bordo carta" style="margin-bottom: 50px; " id="dashboard">
             <tbody>
                 <tr *ngFor="let elemento of vettDati3.dipendenti; let i = index" class="bordoPiccolo">
+                    <!--*ngIf="elemento.id_domanda == vettDati3.domande[i].id"-->
                     <td style="width: 45%;">
                         <p class="scritteRosse">{{vettDati3.domande[i].titolodomanda}}</p>
                         <p style="word-break: break-all;">

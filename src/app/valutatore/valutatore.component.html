@@ -39,7 +39,7 @@
     </table>
 
     <div *ngIf="ok3">
-        <select [(ngModel)]="dataScelta" style="margin-right: 15px;" >
+        <select [(ngModel)]="dataScelta" style="margin-right: 15px;">
             <option *ngFor="let elemento of date; let i = index" value="{{i + 1}}){{elemento.nota}}">
                 {{i + 1}}) {{elemento.nota}}</option>
         </select>
@@ -54,7 +54,7 @@
                     <tr>
                         <td colspan="2" *ngIf="Mostrare"></td>
                         <td colspan="3">
-                            <div style="float: left;">
+                            <div style="float: right;">
                                 <p>Valutato: {{nomeValutato}}</p>
                                 <p>Valutatore: {{nomeValutatoreSistemato}}</p>
                                 <p>{{dataSenza}}</p>
@@ -83,12 +83,15 @@
                             <p style="word-break: break-all;">
                                 {{vettDati4.domande[i].descrizione}}</p>
                         </td>
-                        <td style="width: 25%; border-left: 1px solid black;" *ngIf="Mostrare">{{vettDati5[i].note}}
+                        <td style="width: 25%; border-left: 1px solid black; word-break: break-all;" *ngIf="Mostrare">
+                            {{vettDati5[i].note}}
                         </td>
                         <td style="width: 5%; border-left: 1px solid black;" *ngIf="Mostrare">
                             {{vettDati5[i].punteggio}}</td>
-                        <td style="width: 25%; border-left: 1px solid black;">{{elemento.note}}</td>
-                        <td style="width: 5%; border-left: 1px solid black;">{{elemento.punteggio}}</td>
+                        <td style="width: 25%; border-left: 1px solid black; word-break: break-all;">{{elemento.note}}
+                        </td>
+                        <td style="width: 5%; border-left: 1px solid black;" *ngIf="vettDati4.domande[i].tipo == 1">
+                            {{elemento.punteggio}}</td>
                     </tr>
 
                 </tbody>

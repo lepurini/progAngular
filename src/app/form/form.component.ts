@@ -21,6 +21,8 @@ export class FormComponent implements OnInit {
 
   nome: string | undefined;
 
+  uuid!: string;
+
   //oggetto che contiene il nome, la data e le risposte al questionario
   vettoreV1: ValoriValutato | undefined;
 
@@ -44,20 +46,29 @@ export class FormComponent implements OnInit {
 
   ngOnInit(): void {
     this.setFinito(false);
-    /*if (this.perFine = this.condiviso.getDaV()) {
-      this.router.navigateByUrl('/valutatore');
-    }*/
+    const xxx = window.location.search;
+    //const y = new URLSearchParams(xxx);
+    const z = new URLSearchParams(xxx);
+    console.log(z.get('uuid'))
+    //this.uuid != z.get('uuid');
+    //var z = new URLSearchParams(xxx);
     this.perFine = this.condiviso.getDaV();
     this.ok = false;
     this.vettoreV1 = new ValoriValutato();
-    if ((this.vettoreV1!.id_questionario = this.condiviso.getIdQuestionario()) == undefined) {
+    this.vettoreV1.id_dipendente = Number(z.get('idDip'));
+    console.log("IUIU " + this.vettoreV1.id_dipendente);
+    this.vettoreV1!.id_questionario = Number(z.get('idQ'));
+    console.log("parametri: " + this.uuid + " - - - " + this.vettoreV1!.id_questionario);
+    if (!this.perFine && z.get('uuid') == undefined && this.vettoreV1!.id_questionario == undefined) {
       this.router.navigateByUrl('/');
     }
     else {
-      if (/*this.condiviso.getDaV()*/ this.perFine) {
+      if (this.perFine) {
+        this.vettoreV1!.id_questionario = this.condiviso.getIdQuestionario()
         let tmp = this.condiviso.daiDati();
         this.vettoreV1.id_dipendente = tmp[0];
         this.vettoreV1.id_valutatore = tmp[1];
+        console.log("IUIU " + this.vettoreV1.id_dipendente);
         this.nome = tmp[2];
         this.vettoreV1.tipo = 2;
         this.giaDeciso = true;
@@ -74,46 +85,22 @@ export class FormComponent implements OnInit {
 
       this.condiviso.prendiDati(this.url + String(this.vettoreV1.id_questionario)).subscribe((data: any) => {
         this.vettDati = data;
+        //if (z.get('uuid') != undefined) {
+        for (let i = 0; i < this.vettDati.dipendenti.length; i++) {
+          //console.log(this.uuid + "             dentro           " + this.vettDati.dipendenti[i].uuid);
+          if (z.get('uuid') == this.vettDati.dipendenti[i].uuid) {
+            this.nome = this.vettDati.dipendenti[i].cognomenome;
+            console.log(this.nome);
+            break;
+          }
+        }
+        //}
         this.dividiDomande(this.vettDati.domande);
-        /*for (let i = 0; i < this.vettDati.domande.length; i++) {
-          //this.vettoreV1?.risposteDomande.push(new Domanda());
-          if (this.vettDati.domande[i].tipo == 1) {
-            this.vettoreV1?.risposteDomande.push(new Domanda(this.vettDati.domande[i].id));
-            this.vDom1.push(this.vettDati.domande[i]);
-          }
-          else {
-            this.vettoreV1?.domFinali.push(new DomandaFine(this.vettDati.domande[i].id));
-            this.vDom2.push(this.vettDati.domande[i]);
-          }
-        }*/
-        //dati arrivati --> possibile mostrare parti della pagina
         this.ok = true;
-
-      })
+      });
     }
 
     console.log(this.vettoreV1.id_questionario, this.vettoreV1.id_dipendente, this.vettoreV1.id_valutatore);
-    //richiesta al server
-    /*this.miohttp.get(/*"http://localhost:8000/questionario/" + String(this.vettoreV1.id_questionario) this.url).subscribe((dati) => {
-      console.log(dati);
-      this.vettDati = dati;
-      //controllo per dividere le domande con descrizione da quelle che vanno in fondo
-      for (let i = 0; i < this.vettDati.domande.length; i++) {
-        //this.vettoreV1?.risposteDomande.push(new Domanda());
-        if (this.vettDati.domande[i].tipo == 1) {
-          this.vettoreV1?.risposteDomande.push(new Domanda(this.vettDati.domande[i].id));
-          this.vDom1.push(this.vettDati.domande[i]);
-        }
-        else {
-          this.vettoreV1?.domFinali.push(new DomandaFine(this.vettDati.domande[i].id));
-          this.vDom2.push(this.vettDati.domande[i]);
-        }
-      }
-      //dati arrivati --> possibile mostrare parti della pagina
-      this.ok = true;
-    });*/
-
-
     console.log(this.vettoreV1.id_questionario, this.vettoreV1.id_dipendente, this.vettoreV1.id_valutatore);
     this.valutatore = false;
 
@@ -143,20 +130,6 @@ export class FormComponent implements OnInit {
         console.log("b");
         throw new Error("Caratteri inseriti nel campo commenti non validi");
       }
-      /*//try {
-      if (this.vettoreV1.risposteDomande[i].nota != undefined) {
-        this.vettoreV1.risposteDomande[i].nota = this.vettoreV1.risposteDomande[i].nota?.trim();
-      } else {
-        //} catch (error) {
-        console.log("b")
-        //console.log(error);
-        throw new Error("Completare i campi di tutte le domande lasciati vuoti");
-      }
-      //}
-      if (this.vettoreV1!.risposteDomande[i].punteggio == undefined || this.vettoreV1!.risposteDomande[i].nota == "") {
-        console.log("c")
-        throw new Error("Completare i campi di tutti i punteggi e commenti");
-      }*/
     }
 
     //se risposte indefinite o "" non mando i dati
@@ -172,19 +145,6 @@ export class FormComponent implements OnInit {
         console.log("e");
         throw new Error("Caratteri inseriti nel campo commenti non validi");
       }
-      /*//try {
-      if (this.vettoreV1.domFinali[i].nota != undefined) {
-        this.vettoreV1.domFinali[i].nota = this.vettoreV1.domFinali[i].nota?.trim();
-      } else {
-        //} catch (error) {
-        console.log("d");
-        throw new Error("Completare i campi di tutte le domande lasciati vuoti");
-      }
-      //}
-      if (this.vettDati.domFinali[i] == "") {
-        console.log("e");
-        throw new Error("Completare i campi di tutte le domande");
-      }*/
     }
   }
 
@@ -192,10 +152,9 @@ export class FormComponent implements OnInit {
     try {
       this.noVuoto()
       console.log(this.vettoreV1?.data);
-      if (/*!this.condiviso.getDaV()*/ !this.perFine) {
+      /*if (!this.perFine) {
         this.vettoreV1!.id_dipendente = Number(this.nome?.substring(0, this.nome.indexOf(")")));
-      }
-      //this.vettoreV1!.id_questionario = this.condiviso.getIdQuestionario();
+      }*/
       return this.miohttp.post("http://localhost:8000", JSON.stringify(this.vettoreV1), { responseType: 'text' }).subscribe((data) => {
         console.log(data);
         this.condiviso.setDaV(false);
@@ -206,7 +165,6 @@ export class FormComponent implements OnInit {
         console.log("ciao");
       });
     } catch (error) {
-      //console.log(error);
       alert(error);
       return;
     }
@@ -222,12 +180,11 @@ export class FormComponent implements OnInit {
 
   dividiDomande(domande: any[]) {
     for (let i = 0; i < domande.length; i++) {
-      //this.vettoreV1?.risposteDomande.push(new Domanda());
       if (domande[i].tipo == 1) {
         this.vettoreV1?.risposteDomande.push(new Domanda(domande[i].id));
         this.vDom1.push(domande[i]);
       }
-      else {
+      else if ((domande[i].tipo == 2 && this.perFine) || domande[i].tipo == 3) {
         this.vettoreV1?.domFinali.push(new DomandaFine(domande[i].id));
         this.vDom2.push(domande[i]);
       }

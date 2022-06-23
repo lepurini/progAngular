@@ -38,6 +38,15 @@ export class AdminComponent implements OnInit {
   constructor(private condiviso: CondivisoService) { }
 
   ngOnInit() {
+    const xxx = window.location.search;
+    //y= new URLSearchParams(xxx)
+    //y.get('sdfasdf')
+    console.log("parametri: " + xxx);
+    //const urlParams = new URLSearchParams(queryString);
+    //const code = urlParams.get('code')
+
+
+
     this.ok = false;
     this.condiviso.prendiDati(this.url + "init").subscribe((data: any) => {
       this.vettDati = data;
@@ -55,7 +64,7 @@ export class AdminComponent implements OnInit {
 
     if (this.questionarioScelto != undefined) {
       this.idQuestionario = this.condiviso.ritornaNum(this.questionarioScelto);
-      this.condiviso.prendiDati(this.url + "valutatore/" + this.idQuestionario/*this.condiviso.ritornaNum(this.questionarioScelto)*/).subscribe((data: any) => {
+      this.condiviso.prendiDati(this.url + "valutatore/" + this.idQuestionario).subscribe((data: any) => {
         console.log(data);
         this.vettDati2 = data;
         for (let element of this.vettDati2.dipendenti) {
@@ -77,8 +86,8 @@ export class AdminComponent implements OnInit {
     return false;
   }
 
-  prova(nome: string) {
-    alert(nome);
+  prova(nome: string, idDip: number) {
+    alert("http://localhost:4200/questionario?uuid=" + nome + "&idQ=" + this.idQuestionario + "&idDip="  + idDip);
   }
 
   passaDipendente(id: number, responsabile: string) {
@@ -104,10 +113,22 @@ export class AdminComponent implements OnInit {
     if (this.dataScelta != undefined) {
       const a = Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1;
 
-      this.condiviso.prendiDati(this.url + "prendiRiposte/" + this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")")))- 1].id_domanda + "/" + this.idQuestionario).subscribe((data: any) => { 
+      this.condiviso.prendiDati(this.url + "prendiRiposte/" + this.date[Number(this.dataScelta.substring(0, this.dataScelta.indexOf(")"))) - 1].id_domanda + "/" + this.idQuestionario).subscribe((data: any) => {
         console.log("dopo prendiDati");
-        console.log(data);
         console.log(this.vettDati3 = data);
+
+        let vettoreConDomandeGiuste: any[] = [];
+
+        for (let i = 0; i < this.vettDati3.dipendenti.length; i++) {
+          for (let j = 0; j < this.vettDati3.domande.length; j++) {
+            if (this.vettDati3.dipendenti[i].id_domanda == this.vettDati3.domande[j].id) {
+              vettoreConDomandeGiuste.push(this.vettDati3.domande[j]);
+              break;
+            }
+          }
+        }
+
+        console.log(this.vettDati3.domande = vettoreConDomandeGiuste);
         this.ok4 = true;
       });
     }
@@ -117,10 +138,6 @@ export class AdminComponent implements OnInit {
       console.log(this.date);
       alert("Scegliere una data");
     }
-  }
-
-  selectLog(){
-
   }
 
   toPdf() {
