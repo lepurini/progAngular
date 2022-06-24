@@ -17,9 +17,12 @@ export class AdminComponent implements OnInit {
 
   url = "http://localhost:8000/";
 
+  nomeAdmin!: string;
+
   vettDati: any;
   vettDati2: any;
   vettDati3: any;
+  vettDati4: any;
 
   idDipendente!: number;
 
@@ -32,6 +35,8 @@ export class AdminComponent implements OnInit {
   ok3!: boolean;
   ok4!: boolean;
 
+  accessoConsentito!: boolean;
+
   date: DomandaFine[] = [];
   //date: string[] = [];
 
@@ -42,16 +47,46 @@ export class AdminComponent implements OnInit {
     //y= new URLSearchParams(xxx)
     //y.get('sdfasdf')
     console.log("parametri: " + xxx);
+    const z = new URLSearchParams(xxx);
     //const urlParams = new URLSearchParams(queryString);
     //const code = urlParams.get('code')
-
-
-
     this.ok = false;
+
+    this.condiviso.prendiDati(this.url + "controllopermessi/" + 'a' + "/" + z.get('uuid')).subscribe((data: any) => {
+      //console.log(this.vettDati4 = data);
+      /*for (let i = 0; i < this.vettDati4.length; i++) {
+        if (this.vettDati4[i].uuid == z.get('uuid')) {
+          //this.idValutatoreScelto = this.vettDati6[i].id;
+          //this.nomeValutatoreSistemato = this.vettDati6[i].cognomenome;
+          this.nomeAdmin = this.vettDati4[i].cognomenome;
+          this.accessoConsentito = true;
+          console.log(this.accessoConsentito + " ioeurwirethgwior");
+          break;
+        }
+      }*/
+      if (data == false) {
+        this.accessoConsentito = false;
+      } else {
+        this.nomeAdmin = data[0].cognomenome;
+        this.accessoConsentito = true;
+      //}
+
+      //if (this.accessoConsentito) {
+        this.condiviso.prendiDati(this.url + "init").subscribe((data: any) => {
+          this.vettDati = data;
+          this.ok = true;
+        });
+      } /*else {
+        this.accessoConsentito = false;
+        console.log(this.accessoConsentito);
+      }*/
+    });
+
+    /*this.ok = false;
     this.condiviso.prendiDati(this.url + "init").subscribe((data: any) => {
       this.vettDati = data;
       this.ok = true;
-    });
+    });*/
   }
 
   cerca() {
@@ -87,7 +122,7 @@ export class AdminComponent implements OnInit {
   }
 
   prova(nome: string, idDip: number) {
-    alert("http://localhost:4200/questionario?uuid=" + nome + "&idQ=" + this.idQuestionario + "&idDip="  + idDip);
+    alert("http://localhost:4200/questionario?uuid=" + nome + "&idQ=" + this.idQuestionario + "&idDip=" + idDip);
   }
 
   passaDipendente(id: number, responsabile: string) {

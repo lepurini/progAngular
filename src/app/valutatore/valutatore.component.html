@@ -1,113 +1,121 @@
-<div *ngIf="ok">
-    <select name="" id="" [(ngModel)]="vNome" style="margin-bottom: 20px;">
-        <option *ngFor="let elemento of vettDati3;">{{elemento.id}})
-            {{elemento.cognomenome}}</option>
-    </select><br>
-    <!--<app-pag-iniziale [mostra]="false"></app-pag-iniziale>-->
-    <select name="" id="" [(ngModel)]="questionarioScelto">
-        <option *ngFor="let elemento of vettDati;">{{elemento.id}})
-            {{elemento.titolo}}</option>
-    </select>
-    <br>
-
-    <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia" (click)="cerca()"
-        style="margin-top: 30px; margin-bottom: 30px;"><b>Cerca</b></button>
-
-    <table *ngIf="ok2" class="table bordo carta">
-        <tbody>
-            <tr *ngFor="let elemento of vettDati2.dipendenti; let ind = index">
-                <td>
-                    <div *ngIf="mostraBtn[ind]; else x">&#9989;</div>
-                    <ng-template #x>&#10060;</ng-template>
-                </td>
-                <td>{{elemento.cognomenome}}</td>
-                <td>
-                    <div *ngIf="mostraBtn[ind]; else no"><button type="button"
-                            class="btn-sm btn sfondoRosso bordoPiccolo" disabled>Compila</button>
-                        <button style="margin-left: 8px;" id="btnInvia" class="btn sfondoRosso bordoPiccolo btn-sm"
-                            type="button" (click)="passaDipendente(elemento.id, elemento.cognomenome)">mostra</button>
-                        <!--(click)="passaDipendente(elemento.id)"-->
-                    </div>
-                    <ng-template #no><button type="button" id="btnInvia" class="btn-sm btn sfondoRosso bordoPiccolo"
-                            (click)="valuta(this.idValutatoreScelto,elemento.id,this.idQuestionarioScelto,elemento.cognomenome)">Compila</button>
-                        <button disabled style="margin-left: 8px;" id="btnInvia"
-                            class="btn sfondoRosso bordoPiccolo btn-sm" type="button">mostra</button>
-                    </ng-template>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div *ngIf="ok3">
-        <select [(ngModel)]="dataScelta" style="margin-right: 15px;">
-            <option *ngFor="let elemento of date; let i = index" value="{{i + 1}}){{elemento.nota}}">
-                {{i + 1}}) {{elemento.nota}}</option>
+<div *ngIf="accessoConsentito; else no">
+    <div *ngIf="ok">
+        <!--<select name="" id="" [(ngModel)]="vNome" style="margin-bottom: 20px;">
+            <option *ngFor="let elemento of vettDati3;">{{elemento.id}})
+                {{elemento.cognomenome}}</option>
+        </select>--><p>{{nomeValutatoreSistemato}}</p><br>
+        <!--<app-pag-iniziale [mostra]="false"></app-pag-iniziale>-->
+        <select name="" id="" [(ngModel)]="questionarioScelto">
+            <option *ngFor="let elemento of vettDati;">{{elemento.id}})
+                {{elemento.titolo}}</option>
         </select>
-        <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
-            style="margin-top: 30px; margin-bottom: 30px;"
-            (click)="prendiRisposteQuestionario()"><b>Cerca</b></button><br>
-        <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
-            style="margin-bottom: 25px;margin-top: 10px;" (click)="toPdf()" *ngIf="ok4"><b>PDF</b></button>
-        <div *ngIf="ok4">
-            <table style="margin-bottom: 50px;" id="dashboard">
-                <tbody>
-                    <tr>
-                        <td colspan="2" *ngIf="Mostrare"></td>
-                        <td colspan="3">
-                            <div style="float: right;">
-                                <p>Valutato: {{nomeValutato}}</p>
-                                <p>Valutatore: {{nomeValutatoreSistemato}}</p>
-                                <p>{{dataSenza}}</p>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody class="bordo">
-                    <tr>
-                        <td></td>
-                        <td colspan="2" style="border-left: 1px solid black;" *ngIf="Mostrare">VALUTATO</td>
-                        <td colspan="2" style="border-left: 1px solid black;">VALUTATORE</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td style="border-left: 1px solid black; border-top: 1px solid black;" *ngIf="Mostrare">
-                            Commenti</td>
-                        <td style="border-left: 1px solid black; border-top: 1px solid black;" *ngIf="Mostrare">
-                            Punteggio</td>
-                        <td style="border-left: 1px solid black; border-top: 1px solid black;">Commenti</td>
-                        <td style="border-left: 1px solid black; border-top: 1px solid black;">Punteggio</td>
-                    </tr>
-                    <tr *ngFor="let elemento of vettDati4.dipendenti; let i = index" class="bordoPiccolo">
-                        <td style="width: 40%; border-left: 1px solid black;">
-                            <p class="scritteRosse">{{vettDati4.domande[i].titolodomanda}}</p>
-                            <p style="word-break: break-all;">
-                                {{vettDati4.domande[i].descrizione}}</p>
-                        </td>
-                        <td style="width: 25%; border-left: 1px solid black; word-break: break-all;" *ngIf="Mostrare">
-                            {{vettDati5[i].note}}
-                        </td>
-                        <td style="width: 5%; border-left: 1px solid black;" *ngIf="Mostrare">
-                            {{vettDati5[i].punteggio}}</td>
-                        <td style="width: 25%; border-left: 1px solid black; word-break: break-all;">{{elemento.note}}
-                        </td>
-                        <td style="width: 5%; border-left: 1px solid black;" *ngIf="vettDati4.domande[i].tipo == 1">
-                            {{elemento.punteggio}}</td>
-                    </tr>
+        <br>
 
-                </tbody>
-                <tbody>
-                    <tr>
-                        <td colspan="3">
-                            <div style="float: left; padding-top: 30px;">
-                                <p>Luogo e data: ______________</p>
-                                <p>Firma valutato: ______________</p>
-                                <p>Firma valutatore: ______________</p>
-                            </div>
-                        </td>
-                        <td colspan="2" *ngIf="Mostrare"></td>
-                    </tr>
-                </tbody>
-            </table>
+        <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia" (click)="cerca()"
+            style="margin-top: 30px; margin-bottom: 30px;"><b>Cerca</b></button>
+
+        <table *ngIf="ok2" class="table bordo carta">
+            <tbody>
+                <tr *ngFor="let elemento of vettDati2.dipendenti; let ind = index">
+                    <td>
+                        <div *ngIf="mostraBtn[ind]; else x">&#9989;</div>
+                        <ng-template #x>&#10060;</ng-template>
+                    </td>
+                    <td>{{elemento.cognomenome}}</td>
+                    <td>
+                        <div *ngIf="mostraBtn[ind]; else no"><button type="button"
+                                class="btn-sm btn sfondoRosso bordoPiccolo" disabled>Compila</button>
+                            <button style="margin-left: 8px;" id="btnInvia" class="btn sfondoRosso bordoPiccolo btn-sm"
+                                type="button"
+                                (click)="passaDipendente(elemento.id, elemento.cognomenome)">mostra</button>
+                            <!--(click)="passaDipendente(elemento.id)"-->
+                        </div>
+                        <ng-template #no><button type="button" id="btnInvia" class="btn-sm btn sfondoRosso bordoPiccolo"
+                                (click)="valuta(this.idValutatoreScelto,elemento.id,this.idQuestionarioScelto,elemento.cognomenome)">Compila</button>
+                            <button disabled style="margin-left: 8px;" id="btnInvia"
+                                class="btn sfondoRosso bordoPiccolo btn-sm" type="button">mostra</button>
+                        </ng-template>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="ok3">
+            <select [(ngModel)]="dataScelta" style="margin-right: 15px;">
+                <option *ngFor="let elemento of date; let i = index" value="{{i + 1}}){{elemento.nota}}">
+                    {{i + 1}}) {{elemento.nota}}</option>
+            </select>
+            <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
+                style="margin-top: 30px; margin-bottom: 30px;"
+                (click)="prendiRisposteQuestionario()"><b>Cerca</b></button><br>
+            <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
+                style="margin-bottom: 25px;margin-top: 10px;" (click)="toPdf()" *ngIf="ok4"><b>PDF</b></button>
+            <div *ngIf="ok4">
+                <table style="margin-bottom: 50px;" id="dashboard">
+                    <tbody>
+                        <tr>
+                            <td colspan="2" *ngIf="Mostrare"></td>
+                            <td colspan="3">
+                                <div style="float: right;">
+                                    <p>Valutato: {{nomeValutato}}</p>
+                                    <p>Valutatore: {{nomeValutatoreSistemato}}</p>
+                                    <p>{{dataSenza}}</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody class="bordo">
+                        <tr>
+                            <td></td>
+                            <td colspan="2" style="border-left: 1px solid black;" *ngIf="Mostrare">VALUTATO</td>
+                            <td colspan="2" style="border-left: 1px solid black;">VALUTATORE</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="border-left: 1px solid black; border-top: 1px solid black;" *ngIf="Mostrare">
+                                Commenti</td>
+                            <td style="border-left: 1px solid black; border-top: 1px solid black;" *ngIf="Mostrare">
+                                Punteggio</td>
+                            <td style="border-left: 1px solid black; border-top: 1px solid black;">Commenti</td>
+                            <td style="border-left: 1px solid black; border-top: 1px solid black;">Punteggio</td>
+                        </tr>
+                        <tr *ngFor="let elemento of vettDati4.dipendenti; let i = index" class="bordoPiccolo">
+                            <td style="width: 40%; border-left: 1px solid black;">
+                                <p class="scritteRosse">{{vettDati4.domande[i].titolodomanda}}</p>
+                                <p style="word-break: break-all;">
+                                    {{vettDati4.domande[i].descrizione}}</p>
+                            </td>
+                            <td style="width: 25%; border-left: 1px solid black; word-break: break-all;"
+                                *ngIf="Mostrare">
+                                {{vettDati5[i].note}}
+                            </td>
+                            <td style="width: 5%; border-left: 1px solid black;" *ngIf="Mostrare">
+                                {{vettDati5[i].punteggio}}</td>
+                            <td style="width: 25%; border-left: 1px solid black; word-break: break-all;">
+                                {{elemento.note}}
+                            </td>
+                            <td style="width: 5%; border-left: 1px solid black;" *ngIf="vettDati4.domande[i].tipo == 1">
+                                {{elemento.punteggio}}</td>
+                        </tr>
+
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <div style="float: left; padding-top: 30px;">
+                                    <p>Luogo e data: ______________</p>
+                                    <p>Firma valutato: ______________</p>
+                                    <p>Firma valutatore: ______________</p>
+                                </div>
+                            </td>
+                            <td colspan="2" *ngIf="Mostrare"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+<ng-template #no>
+    <h1 *ngIf="accessoConsentito == false">ACCESSO NON CONSENTITO</h1>
+</ng-template>

@@ -49,7 +49,7 @@ export class FormComponent implements OnInit {
     const xxx = window.location.search;
     //const y = new URLSearchParams(xxx);
     const z = new URLSearchParams(xxx);
-    console.log(z.get('uuid'))
+    console.log(z.get('uuid'));
     //this.uuid != z.get('uuid');
     //var z = new URLSearchParams(xxx);
     this.perFine = this.condiviso.getDaV();
@@ -90,6 +90,7 @@ export class FormComponent implements OnInit {
           //console.log(this.uuid + "             dentro           " + this.vettDati.dipendenti[i].uuid);
           if (z.get('uuid') == this.vettDati.dipendenti[i].uuid) {
             this.nome = this.vettDati.dipendenti[i].cognomenome;
+            this.vettoreV1!.id_dipendente = this.vettDati.dipendenti[i].id;
             console.log(this.nome);
             break;
           }
@@ -100,7 +101,6 @@ export class FormComponent implements OnInit {
       });
     }
 
-    console.log(this.vettoreV1.id_questionario, this.vettoreV1.id_dipendente, this.vettoreV1.id_valutatore);
     console.log(this.vettoreV1.id_questionario, this.vettoreV1.id_dipendente, this.vettoreV1.id_valutatore);
     this.valutatore = false;
 

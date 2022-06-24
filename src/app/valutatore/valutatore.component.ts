@@ -22,6 +22,7 @@ export class ValutatoreComponent implements OnInit {
   vettDati3: any;
   vettDati4: any;
   vettDati5: any;
+  vettDati6: any;
 
   dataScelta!: string;
   dataSenza!: string;
@@ -42,6 +43,8 @@ export class ValutatoreComponent implements OnInit {
   ok4!: boolean;
   //ok5!: boolean;
 
+  accessoConsentito!: boolean;
+
   Mostrare = true;
 
   date: DomandaFine[] = [];
@@ -51,8 +54,53 @@ export class ValutatoreComponent implements OnInit {
   constructor(private condiviso: CondivisoService, private router: Router) { }
 
   ngOnInit() {
+    const xxx = window.location.search;
     this.ok = false;
-    this.condiviso.prendiDati(this.url + "init").subscribe((data: any) => {
+    const z = new URLSearchParams(xxx);
+    console.log(z.get('uuid'))
+
+    this.condiviso.prendiDati(this.url + "controllopermessi/" + 'r' + "/" + z.get('uuid')).subscribe((data: any) => {
+      console.log(data);
+      /*this.vettDati6 = data
+      console.log(this.vettDati6 + "aaaaaaaaaaa");
+      console.log(this.vettDati6);*/
+      if (data == false) {
+        this.accessoConsentito = false;
+      } else {
+        this.idValutatoreScelto = data[0].id;
+        this.nomeValutatoreSistemato = data[0].cognomenome;
+        this.accessoConsentito = true;
+      //}
+
+      /*for (let i = 0; i < this.vettDati6.length; i++) {
+        if (this.vettDati6[i].uuid == z.get('uuid')) {
+          this.idValutatoreScelto = this.vettDati6[i].id;
+          this.nomeValutatoreSistemato = this.vettDati6[i].cognomenome;
+          this.accessoConsentito = true;
+          console.log(this.accessoConsentito + " ioeurwirethgwior");
+          break;
+        }
+      }*/
+      //if (this.accessoConsentito) {
+        this.condiviso.prendiDati(this.url + "init").subscribe((data: any) => {
+          this.vettDati = data;
+          console.log(this.vettDati);
+          this.ok = true;
+        });
+        /*this.condiviso.prendiDati(this.url + "prendiValutatori").subscribe((data: any) => {
+          this.vettDati3 = data;
+          console.log(this.vettDati3);
+          this.ok = true;
+        });*/
+      } /*else {
+        this.accessoConsentito = false;
+        console.log(this.accessoConsentito);
+      }*/
+
+      //console.log(this.accessoConsentito);
+    });
+
+    /*this.condiviso.prendiDati(this.url + "init").subscribe((data: any) => {
       this.vettDati = data;
       console.log(this.vettDati);
     });
@@ -60,7 +108,7 @@ export class ValutatoreComponent implements OnInit {
       this.vettDati3 = data;
       console.log(this.vettDati3);
       this.ok = true;
-    });
+    });*/
     //this.nome = undefined;
   }
 
@@ -68,10 +116,10 @@ export class ValutatoreComponent implements OnInit {
     this.mostraBtn = [];
     this.ok2 = this.ok3 = this.ok4 = false;
 
-    if (this.questionarioScelto != undefined && this.vNome != undefined) {
-      this.idValutatoreScelto = this.condiviso.ritornaNum(this.vNome);
+    if (this.questionarioScelto != undefined /*&& this.vNome != undefined*/) {
+      //this.idValutatoreScelto = this.condiviso.ritornaNum(this.vNome);
       this.idQuestionarioScelto = this.condiviso.ritornaNum(this.questionarioScelto);
-      this.nomeValutatoreSistemato = this.vNome.substring(this.vNome.indexOf(')') + 2)
+      //this.nomeValutatoreSistemato = this.vNome.substring(this.vNome.indexOf(')') + 2);
       console.log(this.url + "v/" + this.nomeValutatoreSistemato + "/" + this.idValutatoreScelto + "/" + this.idQuestionarioScelto);
       this.condiviso.prendiDati(this.url + "v/" + this.nomeValutatoreSistemato + "/" + this.idValutatoreScelto + "/" + this.idQuestionarioScelto).subscribe((data: any) => {
         console.log(data);
@@ -100,7 +148,7 @@ export class ValutatoreComponent implements OnInit {
     this.condiviso.passaDatiResponsabile(idValutatore, idValutato, idQuestionario, cognomenome);
     alert(idValutatore + " - - - " + idValutato + " - - - " + idQuestionario);
     this.condiviso.setDaV(true);
-    this.condiviso.getDaV();
+    //this.condiviso.getDaV();
     this.router.navigateByUrl('/questionario');
   }
 
@@ -110,8 +158,11 @@ export class ValutatoreComponent implements OnInit {
 
   passaDipendente(id: number, cognomenome: string) {
     this.date = [];
+    //console.log(this.dataScelta);
     //this.dataScelta != undefined;
     /*this.ok5 = */this.ok3 = this.ok4 = false;
+    //this.dataScelta!= null;
+    //console.log(this.dataScelta);
     this.idDipendente = id;
     this.nomeValutato = cognomenome;
     console.log(this.nomeValutato);
@@ -149,31 +200,8 @@ export class ValutatoreComponent implements OnInit {
           console.log(risposta);
 
           let vettoreConDomandeGiuste: any[] = [];
-
-          /*for (let i = 0; i < this.vettDati5.length; i++) {
-            let continua = true;
-            /*if (this.vettDati5[i].id_domanda == this.vettDati4.domande[i].id) {
-              vettoreConDomandeGiuste.push(this.vettDati5[i]);
-            } else {
-              vettoreConDomandeGiuste.push(null);
-            }
-            for (let j = 0; j < this.vettDati4.domande.length && continua; j++) {
-              if (this.vettDati5[i].id_domanda == this.vettDati4.domande[j].id) {
-                vettoreConDomandeGiuste.push(this.vettDati5[i]);
-                continua = false;
-              }
-              
-            }
-            if (continua) {
-              vettoreConDomandeGiuste.push(this.vettDati5[0]);
-              vettoreConDomandeGiuste[vettoreConDomandeGiuste.length - 1].note = null;
-              vettoreConDomandeGiuste[vettoreConDomandeGiuste.length - 1].punteggio = null;
-            }
-          }*/
-
           for (let i = 0; i < this.vettDati4.domande.length; i++) {
             let continua = true;
-
             for (let j = 0; j < this.vettDati5.length && continua; j++) {
               if (this.vettDati5[j].id_domanda == this.vettDati4.domande[i].id) {
                 vettoreConDomandeGiuste.push(this.vettDati5[j]);
@@ -182,14 +210,15 @@ export class ValutatoreComponent implements OnInit {
             }
 
             if (continua) {
-              console.log(this.vettDati5[0]);
+              /*console.log(this.vettDati5[0]);
               let tmp = Object.create(this.vettDati5[0]);
               tmp.note = null;
               tmp.punteggio = null;
               vettoreConDomandeGiuste.push(tmp);
-              //vettoreConDomandeGiuste[vettoreConDomandeGiuste.length - 1].note = null;
-              //vettoreConDomandeGiuste[vettoreConDomandeGiuste.length - 1].punteggio = null;
-              console.log(this.vettDati5[0]);
+              console.log(this.vettDati5[0]);*/
+              vettoreConDomandeGiuste.push(Object.create(this.vettDati5[0]));
+              vettoreConDomandeGiuste[vettoreConDomandeGiuste.length - 1].note = null;
+              vettoreConDomandeGiuste[vettoreConDomandeGiuste.length - 1].punteggio = null;
             }
           }
 

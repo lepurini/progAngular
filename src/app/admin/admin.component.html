@@ -1,62 +1,70 @@
-<div *ngIf="ok">
-    <!--<app-pag-iniziale [mostra]="false"></app-pag-iniziale>-->
-    <select name="" id="" [(ngModel)]="questionarioScelto" *ngIf="ok">
-        <option *ngFor="let elemento of vettDati;">{{elemento.id}})
-            {{elemento.titolo}}</option>
-    </select>
-    <br>
-
-    <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
-        style="margin-top: 30px; margin-bottom: 30px;" (click)="cerca()"><b>Cerca</b></button>
-
-
-    <table *ngIf="ok2" class="table bordo carta">
-        <tbody>
-            <tr *ngFor="let elemento of vettDati2.dipendenti; let ind = index">
-                <td>
-                    <div *ngIf="mostraBtn[ind]; else x">&#9989;</div>
-                    <ng-template #x>&#10060;</ng-template>
-                </td>
-                <td>{{elemento.cognomenome}}</td>
-                <td>
-                    <div *ngIf="mostraBtn[ind]; else no"><button type="button"
-                            class="btn sfondoRosso bordoPiccolo btn-sm" disabled>Notifica</button><button
-                            style="margin-left: 8px;" (click)="passaDipendente(elemento.id, elemento.responsabile)"
-                            id="btnInvia" class="btn sfondoRosso bordoPiccolo btn-sm" type="button">mostra</button>
-                    </div>
-                    <ng-template #no><button (click)="prova(elemento.uuid, elemento.id)" id="btnInvia"
-                            class="btn sfondoRosso bordoPiccolo btn-sm" type="button">Notifica</button>
-                        <button disabled style="margin-left: 8px;" id="btnInvia"
-                            class="btn sfondoRosso bordoPiccolo btn-sm" type="button">mostra</button>
-                    </ng-template>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div *ngIf="ok3">
-        <select name="" id="" [(ngModel)]="dataScelta" style="margin-right: 15px;">
-            <option *ngFor="let elemento of date; let i = index" value="{{i + 1}}){{elemento.nota}}">
-                {{i + 1}}) {{elemento.nota}}</option>
-        </select>
-        <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
-            style="margin-top: 30px; margin-bottom: 30px;" (click)="prendiRisposteQuestionario()"><b>Cerca</b></button>
+<div *ngIf="accessoConsentito; else no">
+    <div *ngIf="ok">
+        <!--<app-pag-iniziale [mostra]="false"></app-pag-iniziale>-->
+        <p>{{nomeAdmin}}</p>
         <br>
+        <select name="" id="" [(ngModel)]="questionarioScelto">
+            <option *ngFor="let elemento of vettDati;">{{elemento.id}})
+                {{elemento.titolo}}</option>
+        </select>
+        <br>
+
         <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
-            style="margin-bottom: 25px;margin-top: 10px;" (click)="toPdf()" *ngIf="ok4"><b>PDF</b></button>
-        <table *ngIf="ok4" class="bordo carta" style="margin-bottom: 50px; " id="dashboard">
+            style="margin-top: 30px; margin-bottom: 30px;" (click)="cerca()"><b>Cerca</b></button>
+
+
+        <table *ngIf="ok2" class="table bordo carta">
             <tbody>
-                <tr *ngFor="let elemento of vettDati3.dipendenti; let i = index" class="bordoPiccolo">
-                    <!--*ngIf="elemento.id_domanda == vettDati3.domande[i].id"-->
-                    <td style="width: 45%;">
-                        <p class="scritteRosse">{{vettDati3.domande[i].titolodomanda}}</p>
-                        <p style="word-break: break-all;">
-                            {{vettDati3.domande[i].descrizione}}</p>
+                <tr *ngFor="let elemento of vettDati2.dipendenti; let ind = index">
+                    <td>
+                        <div *ngIf="mostraBtn[ind]; else x">&#9989;</div>
+                        <ng-template #x>&#10060;</ng-template>
                     </td>
-                    <td style="width: 45%;">{{elemento.note}}</td>
-                    <td style="width: 10%;">{{elemento.punteggio}}</td>
+                    <td>{{elemento.cognomenome}}</td>
+                    <td>
+                        <div *ngIf="mostraBtn[ind]; else no"><button type="button"
+                                class="btn sfondoRosso bordoPiccolo btn-sm" disabled>Notifica</button><button
+                                style="margin-left: 8px;" (click)="passaDipendente(elemento.id, elemento.responsabile)"
+                                id="btnInvia" class="btn sfondoRosso bordoPiccolo btn-sm" type="button">mostra</button>
+                        </div>
+                        <ng-template #no><button (click)="prova(elemento.uuid, elemento.id)" id="btnInvia"
+                                class="btn sfondoRosso bordoPiccolo btn-sm" type="button">Notifica</button>
+                            <button disabled style="margin-left: 8px;" id="btnInvia"
+                                class="btn sfondoRosso bordoPiccolo btn-sm" type="button">mostra</button>
+                        </ng-template>
+                    </td>
                 </tr>
             </tbody>
         </table>
+
+        <div *ngIf="ok3">
+            <select name="" id="" [(ngModel)]="dataScelta" style="margin-right: 15px;">
+                <option *ngFor="let elemento of date; let i = index" value="{{i + 1}}){{elemento.nota}}">
+                    {{i + 1}}) {{elemento.nota}}</option>
+            </select>
+            <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
+                style="margin-top: 30px; margin-bottom: 30px;"
+                (click)="prendiRisposteQuestionario()"><b>Cerca</b></button>
+            <br>
+            <button type="button" class="btn-lg btn sfondoRosso bordoPiccolo" id="btnInvia"
+                style="margin-bottom: 25px;margin-top: 10px;" (click)="toPdf()" *ngIf="ok4"><b>PDF</b></button>
+            <table *ngIf="ok4" class="bordo carta" style="margin-bottom: 50px; " id="dashboard">
+                <tbody>
+                    <tr *ngFor="let elemento of vettDati3.dipendenti; let i = index" class="bordoPiccolo">
+                        <!--*ngIf="elemento.id_domanda == vettDati3.domande[i].id"-->
+                        <td style="width: 45%;">
+                            <p class="scritteRosse">{{vettDati3.domande[i].titolodomanda}}</p>
+                            <p style="word-break: break-all;">
+                                {{vettDati3.domande[i].descrizione}}</p>
+                        </td>
+                        <td style="width: 45%;">{{elemento.note}}</td>
+                        <td style="width: 10%;">{{elemento.punteggio}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+<ng-template #no>
+    <h1 *ngIf="accessoConsentito == false">ACCESSO NON CONSENTITO</h1>
+</ng-template>

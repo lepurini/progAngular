@@ -18,10 +18,14 @@ export class PagInizialeComponent implements OnInit {
 
   ok: boolean | undefined;
 
+  nonConsentito!: boolean;
+
   constructor(/*private miohttp: HttpClient,*/ private router: Router, private condiviso: CondivisoService) { }
 
   ngOnInit(): void {
     this.ok = false;
+    const xxx = window.location.search;
+    const z = new URLSearchParams(xxx);
     //this.miohttp.get("http://localhost:8000/init").subscribe((dati) => {
     //console.log("ADAADfsdf")
     //console.log(dati);
@@ -42,11 +46,15 @@ export class PagInizialeComponent implements OnInit {
     //this.ok = true;
     //});
     //this.vettDati = this.condiviso.prendiDati(this.url);
-    this.condiviso.prendiDati(this.url).subscribe((data: any) => {
-      this.vettDati = data;
-      //console.log(this.vettDati[1] + "ciaooiuoiu");
-      this.ok = true;
-    });
+    if (z.get('uuid') == undefined) {
+      this.nonConsentito = true;
+    } else {
+      this.condiviso.prendiDati(this.url).subscribe((data: any) => {
+        this.vettDati = data;
+        //console.log(this.vettDati[1] + "ciaooiuoiu");
+        this.ok = true;
+      });
+    }
   }
 
   compila() {
